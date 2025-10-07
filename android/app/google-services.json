@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "871435058481",
+    "project_id": "megathon25-7cd50",
+    "storage_bucket": "megathon25-7cd50.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871435058481:android:081947f5ed18c39abf4410",
+        "android_client_info": {
+          "package_name": "com.megathonapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjTR5UQybvwq-1jOssGQM4MrgqWl9J3pI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
