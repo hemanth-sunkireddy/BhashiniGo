@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import auth from '@react-native-firebase/auth';
+import { saveFcmToken } from "../components/FCMToken";
 
 const Register = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
@@ -37,7 +38,8 @@ const Register = ({ navigation }: any) => {
 
       console.log("Registered user:", userCredential.user.email);
       Alert.alert("Success", "User registered successfully!");
-      navigation.navigate("HomeScreen");
+       await saveFcmToken();
+      navigation.navigate("BottomTabs");
     } catch (error: any) {
       console.error("Error registering user:", error);
       if (error.code === 'auth/email-already-in-use') {

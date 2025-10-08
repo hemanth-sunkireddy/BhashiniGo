@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import auth from "@react-native-firebase/auth";
+import { saveFcmToken } from '../components/FCMToken';
+
 
 const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
@@ -32,7 +34,8 @@ const Login = ({ navigation }: any) => {
 
       console.log("Logged in user:", userCredential.user.email);
       Alert.alert("Success", "Logged in successfully!");
-      navigation.navigate("MainTabs"); // Navigate to home screen
+       await saveFcmToken();
+      navigation.navigate("BottomTabs"); // Navigate to home screen
     } catch (error: any) {
       console.error("Error logging in:", error);
 

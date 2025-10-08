@@ -1,19 +1,80 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { View, Text, TouchableOpacity } from "react-native";
 import HomeScreen from "./screens/Home";
 import ProfileScreen from "./screens/Profile";
+import HomeIcon from "./assets/Home.svg";
+import ProfileIcon from "./assets/Profile.svg";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
-        headerShown: false, // hides the header
-        tabBarActiveTintColor: "#007bff",
-        tabBarInactiveTintColor: "gray",
-        tabBarStyle: { backgroundColor: "#f2f2f2" },
-      }}
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarShowLabel: true,
+        tabBarInactiveBackgroundColor: "transparent",
+        tabBarButton: (props) => (
+          <TouchableOpacity {...props} activeOpacity={1} />
+        ),
+        tabBarItemStyle: {
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingVertical: 0,
+          paddingHorizontal: 0,
+          margin: 0,
+          borderColor: "white",
+        },
+        tabBarStyle: {
+          paddingHorizontal: 20,
+          paddingTop: 0,
+          paddingBottom: 0,
+          borderColor: "#FFFFFF",
+          borderTopWidth: 5,
+          height: 65,
+          backgroundColor: "#fffaf7",
+          shadowColor: "#000",
+          shadowOpacity: 0.1,
+          shadowRadius: 2,
+          elevation: 2,
+        },
+        tabBarLabelPosition: "below-icon",
+        tabBarIcon: ({ focused }) => {
+          const iconSize = { width: 30, height: 30 };
+          let IconComponent = null;
+
+          if (route.name === "Home") {
+            IconComponent = HomeIcon;
+          } else if (route.name === "Profile") {
+            IconComponent = ProfileIcon;
+          }
+
+          return (
+            <View>
+              {IconComponent && (
+                <IconComponent {...iconSize} opacity={focused ? 1 : 0.5} />
+              )}
+            </View>
+          );
+        },
+        tabBarLabel: ({ focused }) => (
+          <Text
+            style={{
+              fontSize: 12,
+              textAlign: "center",
+              fontWeight: focused ? "700" : "600",
+              fontFamily: "Gilroy-Regular",
+              color: focused ? "black" : "#666",
+              paddingTop: 4,
+            }}
+          >
+            {route.name}
+          </Text>
+        ),
+      })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
