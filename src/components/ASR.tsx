@@ -1,9 +1,13 @@
 import RNFS from "react-native-fs";
 
-export const callCanvasAudioAPI = async (filePath: string) => {
-  const endpoint =
-    "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67100d22a0397bc812dacb27"; // 🔁 replace with ASR model id
+export const callCanvasAudioAPI = async (filePath: string,  sourceLang: string) => {
+     const endpoints: Record<string, string> = {
+    en: "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67127dcbb1a6984f0c5e7d35", // English ASR
+    hi: "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67100d22a0397bc812dacb27", // Hindi ASR
+    te: "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67b840e29c21bec07537674b", // Telugu ASR
+  };
   console.log("FILE PATH: ", filePath);
+   const endpoint = endpoints[sourceLang];
   try {
     // Create FormData payload
     const formData = new FormData();

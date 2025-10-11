@@ -1,7 +1,11 @@
-export const callCanvasTTSAPI = async (text: string, gender: "male" | "female") => {
-  const endpoint =
-    "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/67bca8b3e0b95a6a1ea34a93";
-
+export const callCanvasTTSAPI = async (text: string, gender: "male" | "female", targetLang: string,) => {
+  
+  const endpoints: Record<string, string> = {
+    en: "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/67bca8b3e0b95a6a1ea34a93", // English TTS
+    hi: "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/67bca89ae0b95a6a1ea34a92", // Hindi TTS
+    te: "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/67bca880e0b95a6a1ea34a91", // Telugu TTS
+  };
+  const endpoint = endpoints[targetLang];
   try {
     const response = await fetch(endpoint, {
       method: "POST",

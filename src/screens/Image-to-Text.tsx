@@ -1,76 +1,164 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert, StyleSheet } from "react-native";
 import DocumentPicker, { pick, types } from "@react-native-documents/picker";
+import { Picker } from "@react-native-picker/picker";
+import { callBhasaniOCR } from "../components/OCR";
+
+const languageLabels: Record<string, string> = {
+  en: "English",
+  hi: "Hindi",
+  te: "Telugu",
+};
 
 const ImageToText = () => {
-    const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [ocrResult, setOcrResult] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [lang, setLang] = useState<string>("en");
 
-    const handlePickFile = async () => {
-        try {
-            const doc = await pick({
-                allowMultiSelection: false,
-                type: [
-                    types.images, // includes .jpg, .jpeg, .png, .bmp
-                    types.pdf,
-                    types.doc,
-                    types.docx,
-                    types.xls,
-                ],
-            });
+  const handlePickFile = async () => {
+    try {
+      const doc = await pick({
+        allowMultiSelection: false,
+        type: [types.images],
+      });
+      if (doc && doc[0]) {
+        const file = doc[0];
+        setSelectedFile(file);
+        setOcrResult("");
+        await handleOcr(file);
+      }
+    } catch (err: any) {
+      console.error("File Picker Error:", err);
+    }
+  };
 
-            if (doc && doc[0]) {
-                const file = doc[0];
-                console.log("📄 Selected File:", file);
-                setSelectedFile(file);
-            }
-        } catch (err: any) {
-            console.error("File Picker Error:", err);
-        }
-    };
+  const handleOcr = async (file: any) => {
+    setLoading(true);
+    setOcrResult("");
+    try {
+      const data = await callBhasaniOCR(file, lang);
+      setOcrResult(data?.text || "No text found");
+    } catch (error: any) {
+      setOcrResult("OCR failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#F8F9FA",
-            }}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Image to Text (OCR)</Text>
+      <Text style={styles.label}>Select Language:</Text>
+      <View style={styles.pickerWrapper}>
+        <Picker
+          selectedValue={lang}
+          onValueChange={setLang}
+          style={styles.picker}
         >
-            <TouchableOpacity
-                onPress={handlePickFile}
-                style={{
-                    backgroundColor: "#007BFF",
-                    padding: 14,
-                    borderRadius: 8,
-                }}
-            >
-                <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
-                    📂 Choose File
-                </Text>
-            </TouchableOpacity>
-
-            {selectedFile && (
-                <View style={{ marginTop: 20, alignItems: "center" }}>
-                    {selectedFile.type?.startsWith("image/") ? (
-                        <Image
-                            source={{ uri: selectedFile.uri }}
-                            style={{
-                                width: 200,
-                                height: 200,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                borderColor: "#ccc",
-                            }}
-                            resizeMode="cover"
-                        />
-                    ) : (
-                        <Text style={{ color: "#333" }}>{selectedFile.name}</Text>
-                    )}
-                </View>
-            )}
+          <Picker.Item label="English" value="en" />
+          <Picker.Item label="Hindi" value="hi" />
+          <Picker.Item label="Telugu" value="te" />
+        </Picker>
+      </View>
+      <TouchableOpacity onPress={handlePickFile} style={styles.button}>
+        <Text style={styles.buttonText}>📂 Choose Image</Text>
+      </TouchableOpacity>
+      {selectedFile && (
+        <View style={{ marginTop: 20, alignItems: "center" }}>
+          <Image
+            source={{ uri: selectedFile.uri }}
+            style={styles.image}
+            resizeMode="cover"
+          />
         </View>
-    );
+      )}
+      {loading && (
+        <Text style={styles.loadingText}>Processing image...</Text>
+      )}
+      {ocrResult ? (
+        <View style={styles.outputBox}>
+          <Text style={styles.outputLabel}>OCR Output:</Text>
+          <Text style={styles.outputText}>{ocrResult}</Text>
+        </View>
+      ) : null}
+    </View>
+  );
 };
 
 export default ImageToText;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F8F9FA",
+    padding: 16,
+  },
+  heading: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 18,
+    color: "#222",
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 5,
+    color: "#444",
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: "#d0d7de",
+    borderRadius: 10,
+    marginBottom: 15,
+    backgroundColor: "#f7fafc",
+    overflow: "hidden",
+    width: 220,
+  },
+  picker: {
+    height: 44,
+    color: "#222",
+    width: 220,
+  },
+  button: {
+    backgroundColor: "#007BFF",
+    padding: 14,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  loadingText: {
+    marginTop: 16,
+    color: '#007BFF',
+    fontWeight: 'bold',
+  },
+  outputBox: {
+    marginTop: 24,
+    backgroundColor: '#e6f0fa',
+    padding: 16,
+    borderRadius: 8,
+    maxWidth: 320,
+  },
+  outputLabel: {
+    fontWeight: 'bold',
+    marginBottom: 6,
+    color: '#007BFF',
+  },
+  outputText: {
+    color: '#222',
+    fontSize: 16,
+  },
+});

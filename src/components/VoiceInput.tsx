@@ -14,19 +14,15 @@ import {
 } from "react-native-permissions";
 import { callCanvasAudioAPI } from "./ASR";
 
-// ✅ Add props interface
 interface VoiceRecorderProps {
-    sourceLang?: string;
-    targetLang?: string;
-    onResult?: (result: any) => void;
+    sourceLang: string; // 👈 add this
+    onResult?: (recognizedText: string) => void;
 }
 
-const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
-    sourceLang,
-    targetLang,
-    onResult,
-}) => {
+const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ sourceLang, onResult }) => {
+
     const [isRecording, setIsRecording] = useState(false);
+
     const voiceProcessor = VoiceProcessor.instance;
     const audioDataRef = useRef<number[]>([]);
 
@@ -34,6 +30,9 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     const CHANNELS = 1;
     const BITS_PER_SAMPLE = 16;
 
+    // -----------------------
+    // Setup frame listener
+    // -----------------------
     useEffect(() => {
         const onFrame = (frame: number[]) => {
             audioDataRef.current.push(...frame);
@@ -58,6 +57,9 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         };
     }, []);
 
+    // -----------------------
+    // Request microphone permission
+    // -----------------------
     const requestMicPermission = async (): Promise<boolean> => {
         try {
             const permission = PERMISSIONS.ANDROID.RECORD_AUDIO;
@@ -89,6 +91,9 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         }
     };
 
+    // -----------------------
+    // Convert audio samples to WAV
+    // -----------------------
     const writeWavFile = async (samples: number[]) => {
         const filePath = `${RNFS.DocumentDirectoryPath}/recorded_audio.wav`;
         const numSamples = samples.length;
@@ -102,7 +107,6 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         wav += "RIFF";
         wav += toLittleEndian(totalSize - 8, 4);
         wav += "WAVE";
-
         wav += "fmt ";
         wav += toLittleEndian(16, 4);
         wav += toLittleEndian(1, 2);
@@ -111,7 +115,6 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         wav += toLittleEndian(byteRate, 4);
         wav += toLittleEndian(blockAlign, 2);
         wav += toLittleEndian(BITS_PER_SAMPLE, 2);
-
         wav += "data";
         wav += toLittleEndian(dataSize, 4);
 
@@ -135,31 +138,47 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         return str;
     };
 
+    // -----------------------
+    // Handle record start/stop
+    // -----------------------
     const handleToggleRecording = async () => {
         const frameLength = 512;
 
         try {
             if (isRecording) {
+                // Stop recording
                 await voiceProcessor.stop();
                 setIsRecording(false);
 
                 const samples = [...audioDataRef.current];
                 audioDataRef.current = [];
 
+                // Convert to WAV
                 const filePath = await writeWavFile(samples);
 
+                // Send to ASR API
                 try {
-                    const response = await callCanvasAudioAPI(filePath);
+                    const response = await callCanvasAudioAPI(filePath, sourceLang);
+                    const recognizedText = response?.data?.recognized_text;
+                    console.log("API Response:", recognizedText);
 
-                    // ✅ Call onResult callback if provided
-                    if (onResult) onResult(response);
-                    else console.log("🎧 Canvas API Response:", response);
+                    if (!recognizedText) {
+                        console.warn("No text recognized from audio");
+                        Alert.alert("ASR Error", "No text recognized.");
+                        return;
+                    }
+
+                    console.log("🎤 Recognized Text:", recognizedText);
+
+                    // ✅ Send recognized text to parent
+                    if (onResult) onResult(recognizedText);
 
                 } catch (apiError: any) {
                     console.error("❌ Canvas API Error:", apiError);
                     Alert.alert("API Error", apiError.message || "Failed to infer audio.");
                 }
             } else {
+                // Start recording
                 const hasPermission = await requestMicPermission();
                 if (!hasPermission) return;
 

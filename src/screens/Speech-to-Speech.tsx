@@ -34,7 +34,7 @@ export const playAudioFromUrl = (url: string) => {
   });
 };
 
-const generateTTS = async (inputText: string, gender: "male" | "female" = "male", setLoading: (val: boolean) => void) => {
+const generateTTS = async (inputText: string, gender: "male" | "female" = "male", targetLang: string, setLoading: (val: boolean) => void) => {
   if (!inputText.trim()) {
     Alert.alert("Error", "Input text is empty.");
     return;
@@ -44,7 +44,7 @@ const generateTTS = async (inputText: string, gender: "male" | "female" = "male"
     setLoading(true);
     console.log("🗣️ Sending TTS request...");
 
-    const response = await callCanvasTTSAPI(inputText.trim(), gender);
+    const response = await callCanvasTTSAPI(inputText.trim(), gender, targetLang);
     const audioUrl = response?.data?.s3_url;
 
     if (audioUrl) {
@@ -74,39 +74,47 @@ const SpeechToSpeech = ({ navigation }: any) => {
 
   const handleVoiceResult = async (recognizedText: string) => {
     console.log("Recognized Text:", recognizedText);
-
+let translatedText = "";
     // ✅ Handle all language combinations
     if (sourceLang === "en" && targetLang === "hi") {
       console.log("English → Hindi:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
-      const translatedText = response?.data?.output_text;
+      translatedText = response?.data?.output_text;
+      console.log("Translated Text:", translatedText);
 
-  if (translatedText) {
-    // Call your TTS function, pass gender and setLoading if needed
-    generateTTS(translatedText, "male", setLoading);
-  } else {
-    console.warn("No translated text returned from API");
-  }
+ 
       
       // TODO: call translation API for English → Hindi
     } else if (sourceLang === "en" && targetLang === "te") {
       console.log("English → Telugu:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
+       translatedText = response?.data?.output_text;
+      console.log("Translated Text:", translatedText);
 
     } else if (sourceLang === "hi" && targetLang === "en") {
       console.log("Hindi → English:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
+       translatedText = response?.data?.output_text;
+      console.log("Translated Text:", translatedText);
     } else if (sourceLang === "hi" && targetLang === "te") {
       console.log("Hindi → Telugu:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
+       translatedText = response?.data?.output_text;
+      console.log("Translated Text:", translatedText);
     } else if (sourceLang === "te" && targetLang === "en") {
       console.log("Telugu → English:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
+     translatedText = response?.data?.output_text;
+      console.log("Translated Text:", translatedText);
     } else if (sourceLang === "te" && targetLang === "hi") {
       console.log("Telugu → Hindi:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
+       translatedText = response?.data?.output_text;
+      console.log("Translated Text:", translatedText);
     } else if (sourceLang === "en" && targetLang === "en") {
+      // generateTTS(recognizedText, "male", setLoading);
       console.log("English → English (no translation needed):", recognizedText);
+      
       
     } else if (sourceLang === "hi" && targetLang === "hi") {
       console.log("Hindi → Hindi (no translation needed):", recognizedText);
@@ -118,6 +126,12 @@ const SpeechToSpeech = ({ navigation }: any) => {
       console.log("Unsupported combination:", sourceLang, targetLang);
     }
 
+     if (translatedText) {
+    // Call your TTS function, pass gender and setLoading if needed
+    generateTTS(translatedText, "male", targetLang, setLoading);
+  } else {
+    console.warn("No translated text returned from API");
+  }
     // Optional: show in alert
     Alert.alert(
       "Recognized Text",
@@ -167,7 +181,7 @@ const SpeechToSpeech = ({ navigation }: any) => {
         </View>
 
         {/* 🎙️ Voice recording component */}
-        <VoiceRecorder onResult={handleVoiceResult} />
+       <VoiceRecorder sourceLang={sourceLang} onResult={handleVoiceResult} />
       </View>
     </ScrollView>
   );
