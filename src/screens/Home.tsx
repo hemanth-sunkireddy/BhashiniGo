@@ -5,6 +5,7 @@ const features = [
   { key: "TextTranslator", label: "Text Translator" },
   { key: "SpeechToSpeechScreen", label: "Speech To Speech" },
   { key: "ImageToTextScreen", label: "Image To Text" },
+  { key: "TextToSpeechScreen", label: "Text to Speech" },
   // Add more features here as needed
 ];
 
@@ -18,6 +19,9 @@ const Home = ({ navigation }: any) => {
     }
     else if (featureKey === "ImageToTextScreen") {
       navigation.navigate("ImageToTextScreen");
+    }
+    else if (featureKey === "TextToSpeechScreen") {
+      navigation.navigate("TextToSpeechScreen");
     }
     // Add more navigation logic for other features
   };
