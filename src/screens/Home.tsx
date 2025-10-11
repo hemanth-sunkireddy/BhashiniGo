@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 const features = [
   { key: "TextTranslator", label: "Text Translator" },
@@ -10,25 +12,46 @@ const features = [
 ];
 
 const Home = ({ navigation }: any) => {
+  const [name, setName] = useState<string>("");
+
+  useEffect(() => {
+    const fetchName = async () => {
+      try {
+        const user = auth().currentUser;
+        if (user) {
+          const userDoc = await firestore().collection("users").doc(user.email).get();
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            setName(userData?.name || "");
+          } else {
+            console.log("User document not found");
+          }
+        } else {
+          console.log("No user signed in");
+        }
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+      }
+    };
+
+    fetchName();
+  }, []);
+
   const handlePress = (featureKey: string) => {
     if (featureKey === "TextTranslator") {
       navigation.navigate("TextTranslator");
-    }
-    else if (featureKey === "SpeechToSpeechScreen") {
+    } else if (featureKey === "SpeechToSpeechScreen") {
       navigation.navigate("SpeechToSpeechScreen");
-    }
-    else if (featureKey === "ImageToTextScreen") {
+    } else if (featureKey === "ImageToTextScreen") {
       navigation.navigate("ImageToTextScreen");
-    }
-    else if (featureKey === "TextToSpeechScreen") {
+    } else if (featureKey === "TextToSpeechScreen") {
       navigation.navigate("TextToSpeechScreen");
     }
-    // Add more navigation logic for other features
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome! Choose a Feature:</Text>
+      <Text style={styles.title}>Hello, {name}</Text>
       <FlatList
         data={features}
         renderItem={({ item }) => (

@@ -17,10 +17,13 @@ import TextToSpeech from "./screens/Text-to-Speech";
 import LanguageIcon from "./assets/Language.svg";
 import { getHeaderRight } from "./components/Header";
 import LanguageSelector from "./components/LanguageSelector";
+import i18next from "../lang/i18n";
+import { useTranslation } from "react-i18next";
 
 const Stack = createNativeStackNavigator();
 
 function Navigation(): React.JSX.Element {
+  const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -54,7 +57,7 @@ function Navigation(): React.JSX.Element {
         <Stack.Screen
           name="TextTranslator"
           component={TextTranslator}
-          options={{ title: "Text Translator", headerBackVisible: false }}
+          options={{ title: "Text Translator" }}
         />
         <Stack.Screen
           name="ProfileScreen"
@@ -65,7 +68,7 @@ function Navigation(): React.JSX.Element {
           name="BottomTabs"
           component={BottomTabs}
           options={{
-            title: "Welcome",
+            title: t('Bhasini Go'),
             headerShown: true,
             // headerRight: () => (
             //   <View style={{ marginRight: 15 }}>

@@ -10,21 +10,43 @@ import {
 import auth from "@react-native-firebase/auth";
 import LanguageSelector from "../components/LanguageSelector";
 import i18next from '../../lang/i18n';
+import firestore from "@react-native-firebase/firestore";
 import { useTranslation } from 'react-i18next';
 
 const Profile = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState<any>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((usr) => {
-      if (usr) setUser(usr);
-      else navigation.replace("LoginScreen");
-      setLoading(false);
+      if (usr) {
+        setUser(usr);
+        fetchUserData(usr.email); // 🔹 Fetch Firestore data
+      } else {
+        navigation.replace("LoginScreen");
+        setLoading(false);
+      }
     });
     return unsubscribe;
   }, []);
+
+  const fetchUserData = async (email: string) => {
+    try {
+      const doc = await firestore().collection("users").doc(email).get();
+      if (doc.exists) {
+        console.log("Fetched user data:", doc.data());
+        setUserData(doc.data());
+      } else {
+        console.log("No user document found for:", email);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -34,24 +56,26 @@ const Profile = ({ navigation }: any) => {
     );
   }
 
-  return (
+   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.title}>👤 Profile</Text>
+        <Text style={styles.title}>👤 {t("Profile")}</Text>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>{t('Name')}</Text>
-          <Text style={styles.value}>{user?.displayName || "User"}</Text>
+          <Text style={styles.label}>{t("Name")}</Text>
+          <Text style={styles.value}>
+            {userData?.name || user?.displayName || "User"}
+          </Text>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>{t("Email")}</Text>
           <Text style={styles.value}>{user?.email}</Text>
         </View>
 
         <View style={styles.divider} />
 
-        <Text style={styles.sectionTitle}>Language</Text>
+        <Text style={styles.sectionTitle}>{t("Language")}</Text>
         <LanguageSelector />
 
         <TouchableOpacity
@@ -61,7 +85,7 @@ const Profile = ({ navigation }: any) => {
             navigation.replace("LoginScreen");
           }}
         >
-          <Text style={styles.logoutText}>Logout</Text>
+          <Text style={styles.logoutText}>{t("Logout")}</Text>
         </TouchableOpacity>
       </View>
     </View>

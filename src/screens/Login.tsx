@@ -34,7 +34,6 @@ const Login = ({ navigation }: any) => {
 
       console.log("Logged in user:", userCredential.user.email);
       setErrorText("Success, Logged In going to home");
-      await saveFcmToken();
       navigation.navigate("BottomTabs"); // Navigate to home screen
     } catch (error: any) {
       console.error("Error logging in:", error);

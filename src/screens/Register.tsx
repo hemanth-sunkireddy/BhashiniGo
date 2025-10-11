@@ -8,18 +8,22 @@ import {
 } from "react-native";
 import auth from '@react-native-firebase/auth';
 import { saveFcmToken } from "../components/FCMToken";
+import { Picker } from "@react-native-picker/picker";
+import Down from '../assets/Down.svg';
 
 const Register = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
+  const [preferredLanguage, setPreferredLanguage] = useState("en");
 
 
   const handleRegister = async () => {
     setErrorText(null);
-    if (!email || !password || !confirmPassword) {
+    if (!email || !password || !confirmPassword || !name) {
       setErrorText("Please fill all fields");
       return;
     }
@@ -41,7 +45,7 @@ const Register = ({ navigation }: any) => {
       console.log("Registered user:", userCredential.user.email);
       // Alert.alert("Success", "User registered successfully!");
       setErrorText("Successsfully logged in");
-      await saveFcmToken();
+      await saveFcmToken(name, preferredLanguage);
       navigation.navigate("BottomTabs");
     } catch (error: any) {
       console.error("Error registering user:", error);
@@ -68,6 +72,18 @@ const Register = ({ navigation }: any) => {
 
       <TextInput
         style={styles.input}
+        placeholder="Name"
+        placeholderTextColor="#000"
+        value={name}
+        onChangeText={(text) => {
+          setName(text.trim());
+          if (errorText) setErrorText(null);
+        }}
+        autoCapitalize="none"
+        autoComplete="off"
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Email"
         placeholderTextColor="#000"
         value={email}
@@ -78,6 +94,24 @@ const Register = ({ navigation }: any) => {
         autoCapitalize="none"
         autoComplete="off"
       />
+
+      <View style={styles.dropdownWrapper}>
+        <Picker
+          selectedValue={preferredLanguage}
+          onValueChange={(value) => setPreferredLanguage(value)}
+          style={styles.picker}
+        // dropdownIconColor="#000"
+        >
+          <Picker.Item label="English" value="en" />
+          <Picker.Item label="हिन्दी (Hindi)" value="hi" />
+          <Picker.Item label="తెలుగు (Telugu)" value="te" />
+        </Picker>
+
+        {/* Small dropdown arrow */}
+        {/* <View style={styles.iconContainer}>
+          <Down />
+        </View> */}
+      </View>
 
       <TextInput
         style={[styles.input, { color: "#000" }]}
@@ -147,5 +181,34 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
     fontWeight: "500",
+  },
+  dropdownContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    marginBottom: 15,
+  },
+  dropdownLabel: {
+    fontSize: 14,
+    color: "#555",
+    paddingHorizontal: 10,
+    paddingTop: 5,
+  },
+  picker: {
+    // height: 40,
+    color: "#000",
+  },
+  iconContainer: {
+    position: "absolute",
+    right: 10,
+    pointerEvents: "none",
+  },
+  dropdownWrapper: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    marginBottom: 15,
+    position: "relative",
+    justifyContent: "center",
   },
 });
