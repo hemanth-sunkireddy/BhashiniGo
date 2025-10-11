@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, TouchableOpacity } from "react-native";
-import HomeScreen from "./screens/Home";
 import ProfileScreen from "./screens/Profile";
+import Home from "./screens/Home";
 import HomeIcon from "./assets/Home.svg";
 import ProfileIcon from "./assets/Profile.svg";
 
@@ -16,9 +16,13 @@ const BottomTabs = () => {
         headerShown: false,
         tabBarShowLabel: true,
         tabBarInactiveBackgroundColor: "transparent",
-        tabBarButton: (props) => (
-          <TouchableOpacity {...props} activeOpacity={1} />
-        ),
+        tabBarButton: (props) => {
+          // Remove nulls from props to avoid TouchableOpacity type errors
+          const filteredProps = Object.fromEntries(
+            Object.entries(props).filter(([_, v]) => v !== null)
+          );
+          return <TouchableOpacity {...filteredProps} activeOpacity={1} />;
+        },
         tabBarItemStyle: {
           flex: 1,
           justifyContent: "center",
@@ -76,7 +80,7 @@ const BottomTabs = () => {
         ),
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

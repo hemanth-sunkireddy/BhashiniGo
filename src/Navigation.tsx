@@ -6,9 +6,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Welcome from "./screens/Welcome";
 import Login from "./screens/Login";
 import Register from './screens/Register';
-import Home from './screens/Home';
+import TextTranslator from './screens/TextTranslator';
 import Profile from "./screens/Profile";
 import BottomTabs from "./BottomTabs";
+import Home from './screens/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,11 +43,15 @@ function Navigation(): React.JSX.Element {
           options={{ title: "Home", headerBackVisible: false }}
         />
         <Stack.Screen
+          name="TextTranslator"
+          component={TextTranslator}
+          options={{ title: "Text Translator", headerBackVisible: false }}
+        />
+        <Stack.Screen
           name="ProfileScreen"
           component={Profile}
           options={{ title: "Profile", headerBackVisible: false }}
         />
-
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabs}
