@@ -1,4 +1,5 @@
 import React from "react";
+import { TouchableOpacity, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -13,6 +14,9 @@ import BottomTabs from "./BottomTabs";
 import SpeechToSpeech from "./screens/Speech-to-Speech";
 import ImageToText from "./screens/Image-to-Text";
 import TextToSpeech from "./screens/Text-to-Speech";
+import LanguageIcon from "./assets/Language.svg";
+import { getHeaderRight } from "./components/Header";
+import LanguageSelector from "./components/LanguageSelector";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +47,9 @@ function Navigation(): React.JSX.Element {
         <Stack.Screen
           name="HomeScreen"
           component={Home}
-          options={{ title: "Home", headerBackVisible: false }}
+          options={{
+            title: "Home", headerBackVisible: false,
+          }}
         />
         <Stack.Screen
           name="TextTranslator"
@@ -58,9 +64,18 @@ function Navigation(): React.JSX.Element {
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabs}
-          options={{ headerShown: false }}
+          options={{
+            title: "Welcome",
+            headerShown: true,
+            // headerRight: () => (
+            //   <View style={{ marginRight: 15 }}>
+            //     <LanguageSelector />
+            //   </View>
+            // ),
+            headerBackVisible: false
+          }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="SpeechToSpeechScreen"
           component={SpeechToSpeech}
           options={{ title: "Speech To Speech" }}
