@@ -9,7 +9,7 @@ import Register from './screens/Register';
 import TextTranslator from './screens/TextTranslator';
 import Profile from "./screens/Profile";
 import BottomTabs from "./BottomTabs";
-import Home from './screens/Home';
+import SpeechToSpeech from "./screens/Speech-to-Speech";
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +56,11 @@ function Navigation(): React.JSX.Element {
           name="BottomTabs"
           component={BottomTabs}
           options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="SpeechToSpeechScreen"
+          component={SpeechToSpeech}
+          options={{ title: "Speech To Speech" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
