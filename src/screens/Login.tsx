@@ -34,7 +34,7 @@ const Login = ({ navigation }: any) => {
 
       console.log("Logged in user:", userCredential.user.email);
       Alert.alert("Success", "Logged in successfully!");
-       await saveFcmToken();
+      await saveFcmToken();
       navigation.navigate("BottomTabs"); // Navigate to home screen
     } catch (error: any) {
       console.error("Error logging in:", error);
@@ -61,6 +61,7 @@ const Login = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor="#000"
         value={email}
         autoCapitalize="none"
         autoComplete="off"
@@ -70,6 +71,7 @@ const Login = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor="#000"
         secureTextEntry
         value={password}
         onChangeText={setPassword}

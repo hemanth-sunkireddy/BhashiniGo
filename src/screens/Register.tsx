@@ -5,7 +5,6 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Alert,
 } from "react-native";
 import auth from '@react-native-firebase/auth';
 import { saveFcmToken } from "../components/FCMToken";
@@ -15,15 +14,18 @@ const Register = ({ navigation }: any) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorText, setErrorText] = useState<string | null>(null);
+
 
   const handleRegister = async () => {
+    setErrorText(null);
     if (!email || !password || !confirmPassword) {
-      Alert.alert("Error", "Please fill all fields");
+      setErrorText("Please fill all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
+      setErrorText("Password Don't Match");
       return;
     }
 
@@ -37,23 +39,26 @@ const Register = ({ navigation }: any) => {
       );
 
       console.log("Registered user:", userCredential.user.email);
-      Alert.alert("Success", "User registered successfully!");
-       await saveFcmToken();
+      // Alert.alert("Success", "User registered successfully!");
+      setErrorText("Successsfully logged in");
+      await saveFcmToken();
       navigation.navigate("BottomTabs");
     } catch (error: any) {
       console.error("Error registering user:", error);
       if (error.code === 'auth/email-already-in-use') {
-        Alert.alert("Error", "Email already in use");
+        setErrorText("Email already in use");
+
       } else if (error.code === 'auth/invalid-email') {
-        Alert.alert("Error", "Invalid email address");
+        setErrorText("Invalid Email Address");
       } else if (error.code === 'auth/weak-password') {
-        Alert.alert("Error", "Password should be at least 6 characters");
+        setErrorText("Password should be atleast 6 characters");
       } else {
-        Alert.alert("Error", error.message || "Something went wrong");
+        setErrorText("Error" + error.message);
+
       }
     } finally {
       setLoading(false);
-      
+
     }
   };
 
@@ -64,8 +69,12 @@ const Register = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor="#000"
         value={email}
-        onChangeText={(text) => setEmail(text.trim())}
+        onChangeText={(text) => {
+          setEmail(text.trim());
+          if (errorText) setErrorText(null);
+        }}
         autoCapitalize="none"
         autoComplete="off"
       />
@@ -73,18 +82,27 @@ const Register = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor="#000"
         secureTextEntry
         value={password}
-        onChangeText={setPassword}
+        onChangeText={(text) => {
+          setPassword(text);
+          if (errorText) setErrorText(null);
+        }}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
+        placeholderTextColor="#000"
         secureTextEntry
         value={confirmPassword}
-        onChangeText={setConfirmPassword}
+        onChangeText={(text) => {
+          setConfirmPassword(text);
+          if (errorText) setErrorText(null);
+        }}
       />
+      {errorText && <Text style={styles.errorText}>{errorText}</Text>}
 
       <Button
         title={loading ? "Registering..." : "Register"}
@@ -123,5 +141,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 15,
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
+    fontWeight: "500",
   },
 });

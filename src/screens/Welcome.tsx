@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
 import auth from "@react-native-firebase/auth";
 
 const Welcome = ({ navigation }: any) => {
   const [loading, setLoading] = useState(true);
-
+  const [user, setUser] = useState<any>(null);
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
+      setUser(user);
       if (user) {
         // User is logged in → redirect after short delay
         setTimeout(() => {
@@ -14,7 +15,7 @@ const Welcome = ({ navigation }: any) => {
         }, 1000); // optional delay to show welcome message
       } else {
         // User not logged in → redirect to login
-        navigation.replace("LoginScreen");
+        // navigation.replace("LoginScreen");
       }
       setLoading(false);
     });
@@ -30,7 +31,19 @@ const Welcome = ({ navigation }: any) => {
           <Text style={styles.text}>Loading...</Text>
         </>
       ) : (
-        <Text style={styles.text}>Welcome Home! Redirecting...</Text>
+        <>
+          <Text style={styles.text}>Welcome Home!</Text>
+
+          {!user && (
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+              <Text style={styles.loginButtonText}>Go to Login</Text>
+            </TouchableOpacity>
+          )}
+        </>
+
       )}
     </View>
   );
@@ -49,5 +62,17 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 18,
     fontWeight: "500",
+  },
+  loginButton: {
+    marginTop: 20,
+    backgroundColor: "#007AFF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
