@@ -11,6 +11,7 @@ import TextTranslator from './screens/TextTranslator';
 import Profile from "./screens/Profile";
 import BottomTabs from "./BottomTabs";
 import SpeechToSpeech from "./screens/Speech-to-Speech";
+import ImageToText from "./screens/Image-to-Text";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,11 @@ function Navigation(): React.JSX.Element {
           name="SpeechToSpeechScreen"
           component={SpeechToSpeech}
           options={{ title: "Speech To Speech" }}
+        />
+        <Stack.Screen
+          name="ImageToTextScreen"
+          component={ImageToText}
+          options={{ title: "Image To Text" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
