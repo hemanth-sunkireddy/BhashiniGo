@@ -5,7 +5,6 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Alert,
   TouchableOpacity,
 } from "react-native";
 import auth from "@react-native-firebase/auth";
@@ -16,10 +15,11 @@ const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorText, setErrorText] = useState<string | null>(null);
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please enter both email and password");
+      setErrorText("Please Enter both Email and Password");
       return;
     }
 
@@ -33,7 +33,7 @@ const Login = ({ navigation }: any) => {
       );
 
       console.log("Logged in user:", userCredential.user.email);
-      Alert.alert("Success", "Logged in successfully!");
+      setErrorText("Success, Logged In going to home");
       await saveFcmToken();
       navigation.navigate("BottomTabs"); // Navigate to home screen
     } catch (error: any) {
@@ -41,13 +41,13 @@ const Login = ({ navigation }: any) => {
 
       // Handle common Firebase Auth errors
       if (error.code === "auth/user-not-found") {
-        Alert.alert("Error", "User not found. Please register.");
+        setErrorText("User not found, please register");
       } else if (error.code === "auth/wrong-password") {
-        Alert.alert("Error", "Incorrect password.");
+        setErrorText("Incorrect password");
       } else if (error.code === "auth/invalid-email") {
-        Alert.alert("Error", "Invalid email address.");
+        setErrorText("Invalid Email Address");
       } else {
-        Alert.alert("Error", error.message || "Something went wrong");
+        setErrorText("Errror: " + error.message);
       }
     } finally {
       setLoading(false);
@@ -69,7 +69,7 @@ const Login = ({ navigation }: any) => {
       />
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: "#000" }]}
         placeholder="Password"
         placeholderTextColor="#000"
         secureTextEntry
@@ -77,6 +77,7 @@ const Login = ({ navigation }: any) => {
         onChangeText={setPassword}
       />
 
+      {errorText && <Text style={styles.errorText}>{errorText}</Text>}
       <Button
         title={loading ? "Logging in..." : "Login"}
         onPress={handleLogin}
@@ -121,5 +122,11 @@ const styles = StyleSheet.create({
   registerText: {
     color: "#007BFF",
     fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
+    fontWeight: "500",
   },
 });

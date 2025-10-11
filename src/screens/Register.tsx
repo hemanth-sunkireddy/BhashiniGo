@@ -80,7 +80,7 @@ const Register = ({ navigation }: any) => {
       />
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: "#000" }]}
         placeholder="Password"
         placeholderTextColor="#000"
         secureTextEntry
@@ -92,7 +92,7 @@ const Register = ({ navigation }: any) => {
       />
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: "#000" }]}
         placeholder="Confirm Password"
         placeholderTextColor="#000"
         secureTextEntry
