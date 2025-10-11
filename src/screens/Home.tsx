@@ -11,6 +11,7 @@ import {
 
 // Import your API function
 import { callCanvasAPI } from "../components/MT";
+import VoiceRecorder from "../components/VoiceInput";
 
 const Home = ({ navigation }: any) => {
   const [inputText, setInputText] = useState("");
