@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Minimal screen imports
 import Welcome from "./screens/Welcome";
+import Home from './screens/Home';
 import Login from "./screens/Login";
 import Register from './screens/Register';
 import TextTranslator from './screens/TextTranslator';

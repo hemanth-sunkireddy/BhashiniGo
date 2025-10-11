@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native
 
 const features = [
   { key: "TextTranslator", label: "Text Translator" },
+    { key: "SpeechToSpeechScreen", label: "Speech To Speech" },
   // Add more features here as needed
 ];
 
@@ -11,6 +12,9 @@ const Home = ({ navigation }: any) => {
     if (featureKey === "TextTranslator") {
       navigation.navigate("TextTranslator");
     } 
+    else if(featureKey==="SpeechToSpeechScreen"){
+      navigation.navigate("SpeechToSpeechScreen");
+    }
     // Add more navigation logic for other features
   };
 
