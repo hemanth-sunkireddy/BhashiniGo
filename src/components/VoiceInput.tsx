@@ -12,9 +12,20 @@ import {
     RESULTS,
     openSettings,
 } from "react-native-permissions";
-import { callCanvasAudioAPI } from "./ASR"
+import { callCanvasAudioAPI } from "./ASR";
 
-const VoiceRecorder = () => {
+// ✅ Add props interface
+interface VoiceRecorderProps {
+    sourceLang?: string;
+    targetLang?: string;
+    onResult?: (result: any) => void;
+}
+
+const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
+    sourceLang,
+    targetLang,
+    onResult,
+}) => {
     const [isRecording, setIsRecording] = useState(false);
     const voiceProcessor = VoiceProcessor.instance;
     const audioDataRef = useRef<number[]>([]);
@@ -25,7 +36,6 @@ const VoiceRecorder = () => {
 
     useEffect(() => {
         const onFrame = (frame: number[]) => {
-            // Push samples to array
             audioDataRef.current.push(...frame);
         };
 
@@ -81,7 +91,6 @@ const VoiceRecorder = () => {
 
     const writeWavFile = async (samples: number[]) => {
         const filePath = `${RNFS.DocumentDirectoryPath}/recorded_audio.wav`;
-
         const numSamples = samples.length;
         const byteRate = (SAMPLE_RATE * CHANNELS * BITS_PER_SAMPLE) / 8;
         const blockAlign = (CHANNELS * BITS_PER_SAMPLE) / 8;
@@ -89,36 +98,29 @@ const VoiceRecorder = () => {
         const headerSize = 44;
         const totalSize = headerSize + dataSize;
 
-        // Convert header + PCM samples to binary string
         let wav = "";
-
-        // RIFF header
         wav += "RIFF";
         wav += toLittleEndian(totalSize - 8, 4);
         wav += "WAVE";
 
-        // fmt subchunk
         wav += "fmt ";
-        wav += toLittleEndian(16, 4); // Subchunk1Size (PCM)
-        wav += toLittleEndian(1, 2); // AudioFormat (1 = PCM)
+        wav += toLittleEndian(16, 4);
+        wav += toLittleEndian(1, 2);
         wav += toLittleEndian(CHANNELS, 2);
         wav += toLittleEndian(SAMPLE_RATE, 4);
         wav += toLittleEndian(byteRate, 4);
         wav += toLittleEndian(blockAlign, 2);
         wav += toLittleEndian(BITS_PER_SAMPLE, 2);
 
-        // data subchunk
         wav += "data";
         wav += toLittleEndian(dataSize, 4);
 
-        // Convert samples to PCM 16-bit LE
         for (let i = 0; i < numSamples; i++) {
-            const s = Math.max(-1, Math.min(1, samples[i] / 32768)); // normalize
+            const s = Math.max(-1, Math.min(1, samples[i] / 32768));
             const val = s < 0 ? s * 0x8000 : s * 0x7fff;
             wav += toLittleEndian(Math.round(val), 2);
         }
 
-        // Save using RNFS
         await RNFS.writeFile(filePath, wav, "ascii");
         console.log("✅ WAV file saved:", filePath);
         return filePath;
@@ -138,22 +140,21 @@ const VoiceRecorder = () => {
 
         try {
             if (isRecording) {
-                console.log("🛑 Stopping recording...");
                 await voiceProcessor.stop();
                 setIsRecording(false);
 
                 const samples = [...audioDataRef.current];
                 audioDataRef.current = [];
 
-                console.log("📦 Writing .wav file with", samples.length, "samples...");
-                const filePath = await writeWavFile(samples); // <-- return file path from writeWavFile()
-                console.log("FILE PATH: ", filePath);
-                console.log("🚀 Sending audio to Canvas API...");
+                const filePath = await writeWavFile(samples);
+
                 try {
                     const response = await callCanvasAudioAPI(filePath);
-                    console.log("🎧 Canvas API Response:", response);
 
-                    Alert.alert("Model Output", JSON.stringify(response, null, 2));
+                    // ✅ Call onResult callback if provided
+                    if (onResult) onResult(response);
+                    else console.log("🎧 Canvas API Response:", response);
+
                 } catch (apiError: any) {
                     console.error("❌ Canvas API Error:", apiError);
                     Alert.alert("API Error", apiError.message || "Failed to infer audio.");
@@ -162,7 +163,6 @@ const VoiceRecorder = () => {
                 const hasPermission = await requestMicPermission();
                 if (!hasPermission) return;
 
-                console.log("🎙 Starting recording...");
                 audioDataRef.current = [];
                 await voiceProcessor.start(frameLength, SAMPLE_RATE);
                 setIsRecording(true);
@@ -172,7 +172,6 @@ const VoiceRecorder = () => {
             Alert.alert("Error", "Unable to start or stop recording.");
         }
     };
-
 
     return (
         <TouchableOpacity
