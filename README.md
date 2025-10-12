@@ -2,6 +2,8 @@
 
 This project is developed using **React Native CLI** with **TypeScript** for Android
 
+* [APK and Demo Video Link](https://1drv.ms/f/c/dd419d073878fab6/EsPggOXr6LVPn5HTMaxqF_YBZZ4CGHYbEzI1VW6fdiVGdA?e=jKMihA)
+
 ---
 
 ## ⚙️ Prerequisites
