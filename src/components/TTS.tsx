@@ -5,7 +5,9 @@ export const callCanvasTTSAPI = async (text: string, gender: "male" | "female", 
     hi: "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/67bca89ae0b95a6a1ea34a92", // Hindi TTS
     te: "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/67bca880e0b95a6a1ea34a91", // Telugu TTS
   };
+  targetLang = "hi";
   const endpoint = endpoints[targetLang];
+  console.log(targetLang);
   try {
     const response = await fetch(endpoint, {
       method: "POST",
@@ -21,7 +23,7 @@ export const callCanvasTTSAPI = async (text: string, gender: "male" | "female", 
     });
 
     const data = await response.json();
-
+    console.log("DATA: ", data);
     if (!response.ok) {
       throw new Error(data.message || "TTS request failed");
     }

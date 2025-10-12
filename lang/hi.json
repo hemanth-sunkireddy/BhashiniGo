@@ -1,4 +1,25 @@
 {
   "Name": "नाम",
-  "Welcome": "स्वागत"
+  "Hello": "नमस्ते",
+  
+  "Travel Phrase Translator": "यात्रा वाक्य अनुवादक",
+  "Text to Text Translator": "पाठ से पाठ अनुवादक",
+  
+  "Talk to Locals": "स्थानीय लोगों से बात करें",
+  "Speech to Speech": "वाक् से वाक् अनुवादक",
+  
+  "Snap and Translate": "तस्वीर लें और अनुवाद करें",
+  "Extract text from images": "छवियों से पाठ निकालें",
+  
+  "Hear it in Local Accent": "स्थानीय उच्चारण में सुनें",
+  "Text to Speech": "पाठ को वाक् में बदलें",
+  
+  "Instant Voice Translate": "त्वरित वॉइस अनुवाद",
+  "Speech To Speech": "वाक् से वाक्",
+  
+  "Call Translation": "कॉल अनुवाद",
+  
+  "Welcome": "स्वागत",
+  "Home": "होम",
+  "Profile": "प्रोफाइल"
 }

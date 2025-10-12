@@ -64,6 +64,7 @@ const TextTranslator = () => {
               selectedValue={sourceLang}
               onValueChange={(value) => setSourceLang(value)}
               style={styles.picker}
+              dropdownIconColor="#000"
             >
               <Picker.Item label="English" value="en" />
               <Picker.Item label="Hindi" value="hi" />
@@ -77,6 +78,7 @@ const TextTranslator = () => {
               selectedValue={targetLang}
               onValueChange={(value) => setTargetLang(value)}
               style={styles.picker}
+              dropdownIconColor="#000"
             >
               <Picker.Item label="English" value="en" />
               <Picker.Item label="Hindi" value="hi" />
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   picker: {
-    height: 50,
+    height: 55,
     color: "#000",
   },
   input: {

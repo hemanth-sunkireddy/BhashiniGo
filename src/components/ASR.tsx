@@ -16,6 +16,8 @@ export const callCanvasAudioAPI = async (filePath: string,  sourceLang: string) 
       name: "recorded_audio.wav",
       type: "audio/wav",
     } as any);
+    console.log("SOURCE LANG: ", sourceLang);
+    console.log("🎧 FILE PATH:", filePath);
 
     const response = await fetch(endpoint, {
       method: "POST",
@@ -36,7 +38,11 @@ export const callCanvasAudioAPI = async (filePath: string,  sourceLang: string) 
     console.log("✅ ASR Response:", data);
     return data;
   } catch (error: any) {
-    console.error("🎧 ASR API ERROR:", error);
+    console.error("🚨 ASR API ERROR CAUGHT 🚨");
+    console.error("🔹 Name:", error.name);
+    console.error("🔹 Message:", error.message);
+    console.error("🔹 Stack:", error.stack);
+    console.error("🔹 Full Error Object:", JSON.stringify(error, null, 2));
     throw new Error(error.message || "Network error");
   }
 };

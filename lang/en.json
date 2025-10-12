@@ -1,3 +1,23 @@
 {
-  "Name": "Name"
+  "Name": "Name",
+  "Hello": "Hello",
+  
+  "Travel Phrase Translator": "Travel Phrase Translator",
+  "Text to Text Translator": "Text to Text Translator",
+  
+  "Talk to Locals": "Talk to Locals",
+  "Speech to Speech": "Speech to Speech",
+  
+  "Snap and Translate": "Snap and Translate",
+  "Extract text from images": "Extract text from images",
+  
+  "Hear it in Local Accent": "Hear it in Local Accent",
+  "Text to Speech": "Text to Speech",
+  
+  "Instant Voice Translate": "Instant Voice Translate",
+  "Speech To Speech": "Speech To Speech",
+  
+  "Call Translation": "Call Translation",
+  "Home": "Home",
+  "Profile": "Profile"
 }

@@ -14,6 +14,7 @@ import TalkIcon from "../assets/Talk.svg";
 import GlobeIcon from "../assets/Globe.svg";
 import CameraIcon from "../assets/Camera.svg";
 import SpeakerIcon from "../assets/Speaker.svg";
+import { useTranslation } from "react-i18next";
 
 const features = [
   {
@@ -56,7 +57,7 @@ const features = [
 
 const Home = ({ navigation }: any) => {
   const [name, setName] = useState<string>("");
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchName = async () => {
       try {
@@ -110,8 +111,8 @@ const Home = ({ navigation }: any) => {
             <Icon width={50} height={50} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.mainText}>{item.mainText}</Text>
-            <Text style={styles.subText}>{item.subText}</Text>
+            <Text style={styles.mainText}>{t(item.mainText)}</Text>
+            <Text style={styles.subText}>{t(item.subText)}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -126,7 +127,7 @@ const Home = ({ navigation }: any) => {
       style={{ flex: 1 }}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Hello, {name}</Text>
+        <Text style={styles.title}>{t('Hello')}, {name}</Text>
         <FlatList
           data={features}
           renderItem={renderItem}

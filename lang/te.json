@@ -1,4 +1,25 @@
 {
   "Name": "పేరు",
-  "Welcome": "స్వాగతం"
+  "Hello": "హలో",
+  
+  "Travel Phrase Translator": "ప్రయాణ వాక్య అనువాదం",
+  "Text to Text Translator": "టెక్స్ట్ నుండి టెక్స్ట్ అనువాదం",
+  
+  "Talk to Locals": "స్థానికులతో మాట్లాడండి",
+  "Speech to Speech": "వాయిస్ నుండి వాయిస్ అనువాదం",
+  
+  "Snap and Translate": "ఫోటో తీసి అనువదించండి",
+  "Extract text from images": "చిత్రాల నుండి వచనం పొందండి",
+  
+  "Hear it in Local Accent": "స్థానిక యాసలో వినండి",
+  "Text to Speech": "టెక్స్ట్ ను వాయిస్ గా మార్చండి",
+  
+  "Instant Voice Translate": "తక్షణ వాయిస్ అనువాదం",
+  "Speech To Speech": "వాయిస్ నుండి వాయిస్",
+  
+  "Call Translation": "కాల్ అనువాదం",
+  
+  "Welcome": "స్వాగతం",
+  "Home": "హోమ్",
+  "Profile": "ప్రొఫైల్"
 }

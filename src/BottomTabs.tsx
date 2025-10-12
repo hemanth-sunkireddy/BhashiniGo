@@ -5,10 +5,12 @@ import ProfileScreen from "./screens/Profile";
 import Home from "./screens/Home";
 import HomeIcon from "./assets/Home.svg";
 import ProfileIcon from "./assets/Profile.svg";
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
+  const {t} = useTranslation();
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -75,7 +77,7 @@ const BottomTabs = () => {
               paddingTop: 4,
             }}
           >
-            {route.name}
+            {t(route.name)}
           </Text>
         ),
       })}
