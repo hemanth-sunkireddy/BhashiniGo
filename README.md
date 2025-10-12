@@ -73,4 +73,43 @@ Follow these steps to start the app on your Android device or emulator:
 2. Run `npx react-native run-android` in one terminal.
 3. Run `npx react-native start` in another terminall.
 
+## 🌟 Main Features Implemented
+
+### 🗣️ Real-time Speech-to-Speech Translation (S2S)
+- Enables instant voice translation between **Hindi**, **Telugu**, and **English** using **Bhashini’s ASR and TTS models**.  
+- Ideal for live interactions like **taxis**, **directions**, and **emergencies**.
+
+### 🎧 Audio-to-Text Translation
+- Converts spoken language (e.g., a local guide’s explanation) into **translated Hindi text** for better understanding.
+
+### 📷 Optical Character Recognition (OCR) Translation
+- Instantly scans and translates **printed or handwritten Telugu text** (menus, street signs, notices, prescriptions) into **Hindi**.
+
+### 🌍 Multi-Scenario Usability
+- Designed for **transport**, **tourism**, **dining**, and **medical** situations — ensuring **seamless communication** in real-world contexts.
+
+### 📱 User-Friendly Interface
+- Simple, **mobile-first UI** optimized for **quick and stress-free use** in dynamic environments.
+
+
+### AI Prompts Used
+https://chatgpt.com/share/68eb23cc-54d8-8010-b6e3-e6d0dc7cfb58
+
+https://chatgpt.com/share/68eb23cc-54d8-8010-b6e3-e6d0dc7cfb58
+
+
+https://chatgpt.com/share/68eb2453-4348-8010-8c66-118f8de9a678
+
+https://chatgpt.com/share/68eb23aa-7018-8012-835a-c6fc23bfe188
+
+https://chatgpt.com/share/68eb2542-f95c-8010-ab45-901112151128
+
+
+https://chatgpt.com/share/68eb23aa-7018-8012-835a-c6fc23bfe188
+
+https://chatgpt.com/share/68eb2590-515c-800a-8289-e728361c7608
+
+https://chatgpt.com/share/68eb25a7-79d0-800a-8b7c-487a2f942a34
+
+https://chatgpt.com/share/68eb25bc-e5dc-800a-992b-9b8482ebb0d3
 
