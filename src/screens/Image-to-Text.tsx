@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, Alert, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert, StyleSheet, ScrollView } from "react-native";
 import DocumentPicker, { pick, types } from "@react-native-documents/picker";
 import { Picker } from "@react-native-picker/picker";
 import { callBhasaniOCR } from "../components/OCR";
@@ -38,7 +38,8 @@ const ImageToText = () => {
     setOcrResult("");
     try {
       const data = await callBhasaniOCR(file, lang);
-      setOcrResult(data?.text || "No text found");
+      // ✅ Extract the correct OCR text
+      setOcrResult(data?.data?.decoded_text || "No text found");
     } catch (error: any) {
       setOcrResult("OCR failed: " + error.message);
     } finally {
@@ -46,7 +47,9 @@ const ImageToText = () => {
     }
   };
 
+
   return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
       <Text style={styles.heading}>Image to Text (OCR)</Text>
       <Text style={styles.label}>Select Language:</Text>
@@ -83,12 +86,19 @@ const ImageToText = () => {
         </View>
       ) : null}
     </View>
+    </ScrollView>
   );
 };
 
 export default ImageToText;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 20,
+  },
   container: {
     flex: 1,
     justifyContent: "center",

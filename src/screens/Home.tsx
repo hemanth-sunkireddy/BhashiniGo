@@ -1,16 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import LinearGradient from "react-native-linear-gradient"; // ✅ Added
+import EnglishIcon from "../assets/English.svg";
+import TalkIcon from "../assets/Talk.svg";
+import GlobeIcon from "../assets/Globe.svg";
+import CameraIcon from "../assets/Camera.svg";
+import SpeakerIcon from "../assets/Speaker.svg";
 
 const features = [
-  { key: "TextTranslator", label: "Text Translator" },
-  { key: "SpeechToSpeechScreen", label: "Speech To Speech" },
-  { key: "ImageToTextScreen", label: "Image To Text" },
-  { key: "TextToSpeechScreen", label: "Text to Speech" },
-  { key: "CallScreen", label: "Voice/Video Call" },
-  {key: "AudioToSpeech", label:"Audio To Speech"},
-  // Add more features here as needed
+  {
+    key: "TextTranslator",
+    icon: GlobeIcon,
+    mainText: "Travel Phrase Translator",
+    subText: "Text to Text Translator",
+  },
+  {
+    key: "SpeechToSpeechScreen",
+    icon: TalkIcon,
+    mainText: "Talk to Locals",
+    subText: "Speech to Speech",
+  },
+  {
+    key: "ImageToTextScreen",
+    icon: CameraIcon,
+    mainText: "Snap and Translate",
+    subText: "Extract text from images",
+  },
+  {
+    key: "TextToSpeechScreen",
+    icon: SpeakerIcon,
+    mainText: "Hear it in Local Accent",
+    subText: "Text to Speech",
+  },
+  {
+    key: "AudioToSpeech",
+    icon: SpeakerIcon,
+    mainText: "Audio To Speech",
+    subText: "Audio To Speech",
+  }
 ];
 
 const Home = ({ navigation }: any) => {
@@ -21,7 +56,10 @@ const Home = ({ navigation }: any) => {
       try {
         const user = auth().currentUser;
         if (user) {
-          const userDoc = await firestore().collection("users").doc(user.email).get();
+          const userDoc = await firestore()
+            .collection("users")
+            .doc(user.email)
+            .get();
           if (userDoc.exists) {
             const userData = userDoc.data();
             setName(userData?.name || "");
@@ -49,32 +87,45 @@ const Home = ({ navigation }: any) => {
     } else if (featureKey === "TextToSpeechScreen") {
       navigation.navigate("TextToSpeechScreen");
     }
-    else if (featureKey === "CallScreen") {
-      navigation.navigate("CallScreen");
-    }
-    else if (featureKey==="AudioToSpeech")
-    {
+    else if (featureKey === "AudioToSpeech") {
       navigation.navigate("AudioToSpeech");
     }
   };
 
+  const renderItem = ({ item }: any) => {
+    const Icon = item.icon;
+    return (
+      <TouchableOpacity style={styles.box} onPress={() => handlePress(item.key)}>
+        <View style={styles.boxContent}>
+          <View style={styles.iconContainer}>
+            <Icon width={50} height={50} />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.mainText}>{item.mainText}</Text>
+            <Text style={styles.subText}>{item.subText}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hello, {name}</Text>
-      <FlatList
-        data={features}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => handlePress(item.key)}
-          >
-            <Text style={styles.boxText}>{item.label}</Text>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.key}
-        contentContainerStyle={styles.boxContainer}
-      />
-    </View>
+    <LinearGradient
+      colors={["#A7C7E7", "#E0F7FA", "#D6F0FF"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Hello, {name}</Text>
+        <FlatList
+          data={features}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.key}
+          contentContainerStyle={styles.boxContainer}
+        />
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -85,34 +136,53 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
   },
   title: {
+    paddingTop: 20,
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 30,
     textAlign: "center",
+    color: "#245C84", // 🩵 matches translator theme
   },
   boxContainer: {
     alignItems: "center",
   },
   box: {
-    width: 250,
+    width: 280,
     height: 100,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#EAF4FC", // 🎨 soft blue tone to blend with gradient
     borderRadius: 16,
     justifyContent: "center",
-    alignItems: "center",
     marginBottom: 20,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: "#C8E0F4",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    elevation: 3,
   },
-  boxText: {
-    fontSize: 20,
+  boxContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  iconContainer: {
+    marginRight: 20,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  mainText: {
+    fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: "#245C84", // same deep teal-blue as label in translator
+  },
+  subText: {
+    fontSize: 14,
+    color: "#4F7FA1",
+    marginTop: 4,
   },
 });

@@ -204,21 +204,21 @@ useEffect(() => {
     }
   };
 
-  return (
-    <TouchableOpacity
-      onPress={handleToggleRecording}
-      style={{
-        backgroundColor: isRecording ? "red" : "#007BFF",
-        padding: 14,
-        borderRadius: 8,
-        alignSelf: "center",
-      }}
-    >
-      <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
-        {isRecording ? "🛑 Stop Recording" : "🎤 Start Recording"}
-      </Text>
-    </TouchableOpacity>
-  );
+    return (
+        <TouchableOpacity
+            onPress={handleToggleRecording}
+            style={{
+                backgroundColor: isRecording ? "red" : "#007BFF",
+                padding: 14,
+                borderRadius: 8,
+                alignSelf: "center",
+            }}
+        >
+            <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
+                {isRecording ? "🛑 Stop Recording" : "🎤 Tap and Speak"}
+            </Text>
+        </TouchableOpacity>
+    );
 };
 
 export default VoiceRecorder;

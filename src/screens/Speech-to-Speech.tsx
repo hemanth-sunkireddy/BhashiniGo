@@ -65,8 +65,7 @@ const SpeechToSpeech = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.card}>
-        <Text style={styles.title}>🎤 Speech to Speech</Text>
-
+        <Text style={styles.title}>🎤 Have a Continuous Conversation with Locals</Text>
         <View style={styles.languageBox}>
           <Text style={styles.languageText}>
             {languageLabels[sourceLang]} → {languageLabels[targetLang]}
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 26,
+    fontSize: 18,
     fontWeight: "700",
     textAlign: "center",
     color: "#007BFF",

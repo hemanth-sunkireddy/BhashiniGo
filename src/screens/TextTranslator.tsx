@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import LinearGradient from "react-native-linear-gradient"; // ✅ Added
 import { callCanvasAPI } from "../components/MT";
 
 const TextTranslator = () => {
@@ -49,16 +50,16 @@ const TextTranslator = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.card}>
-        <Text style={styles.title}>🌐 Text Translator</Text>
-        <Text style={styles.subtitle}>
-          {languageLabels[sourceLang]} → {languageLabels[targetLang]}
-        </Text>
-
+    <LinearGradient
+      colors={["#A7C7E7", "#E0F7FA", "#D6F0FF"]} // 🌍 Soft blue globe feel
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.pickerRow}>
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>From</Text>
+            <Text style={styles.label}>Your Language</Text>
             <Picker
               selectedValue={sourceLang}
               onValueChange={(value) => setSourceLang(value)}
@@ -71,7 +72,7 @@ const TextTranslator = () => {
           </View>
 
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>To</Text>
+            <Text style={styles.label}>Local Language</Text>
             <Picker
               selectedValue={targetLang}
               onValueChange={(value) => setTargetLang(value)}
@@ -86,7 +87,7 @@ const TextTranslator = () => {
 
         <TextInput
           style={styles.input}
-          placeholder={`Enter text in ${languageLabels[sourceLang]}...`}
+          placeholder={`Tell what do you want to say...`}
           placeholderTextColor="#777"
           value={inputText}
           onChangeText={setInputText}
@@ -94,10 +95,12 @@ const TextTranslator = () => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleTranslate}>
-          <Text style={styles.buttonText}>Translate</Text>
+          <Text style={styles.buttonText}>Get Translation</Text>
         </TouchableOpacity>
 
-        {loading && <ActivityIndicator size="large" color="#007BFF" style={{ marginTop: 15 }} />}
+        {loading && (
+          <ActivityIndicator size="large" color="#007BFF" style={{ marginTop: 15 }} />
+        )}
 
         {translatedText ? (
           <View style={styles.outputBox}>
@@ -105,8 +108,8 @@ const TextTranslator = () => {
             <Text style={styles.outputText}>{translatedText}</Text>
           </View>
         ) : null}
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
@@ -117,30 +120,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#E9F3FF",
-  },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: "700",
-    textAlign: "center",
-    color: "#007BFF",
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: "center",
-    color: "#555",
-    marginBottom: 20,
   },
   pickerRow: {
     flexDirection: "row",
@@ -165,7 +144,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-    color: "#000"
+    color: "#000",
   },
   input: {
     borderWidth: 1,

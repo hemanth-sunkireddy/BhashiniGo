@@ -21,6 +21,7 @@ import i18next from "../lang/i18n";
 import { useTranslation } from "react-i18next";
 import CallTranslation from "./screens/CallTranslation";
 import AudioToSpeech from "./screens/AudioToSpeech";
+import LinearGradient from "react-native-linear-gradient";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,8 +31,17 @@ function Navigation(): React.JSX.Element {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: "center",
+          headerTitleAlign: "left",
           headerShadowVisible: false,
+          // ✅ Add gradient background for all headers
+          headerBackground: () => (
+            <LinearGradient
+              colors={["#A7C7E7", "#E0F7FA", "#D6F0FF"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{ flex: 1 }}
+            />
+          ),
         }}
       >
         <Stack.Screen
@@ -59,7 +69,7 @@ function Navigation(): React.JSX.Element {
         <Stack.Screen
           name="TextTranslator"
           component={TextTranslator}
-          options={{ title: "Text Translator" }}
+          options={{ title: "Travel Phrase Translator" }}
         />
         <Stack.Screen
           name="ProfileScreen"
@@ -83,7 +93,7 @@ function Navigation(): React.JSX.Element {
         <Stack.Screen
           name="SpeechToSpeechScreen"
           component={SpeechToSpeech}
-          options={{ title: "Speech To Speech" }}
+          options={{ title: "Talk to Locals" }}
         />
         <Stack.Screen
           name="ImageToTextScreen"

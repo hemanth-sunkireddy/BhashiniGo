@@ -32,7 +32,7 @@ const Welcome = ({ navigation }: any) => {
         </>
       ) : (
         <>
-          <Text style={styles.text}>Welcome Home!</Text>
+          <Text style={styles.text}>Welcome to Bashini GO!</Text>
 
           {!user && (
             <TouchableOpacity
