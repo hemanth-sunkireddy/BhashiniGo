@@ -74,7 +74,7 @@ const AudioToSpeech = ({ navigation }: any) => {
 
   const handleVoiceResult = async (recognizedText: string) => {
     console.log("Recognized Text:", recognizedText);
-let translatedText = "";
+    let translatedText = "";
     // ✅ Handle all language combinations
     if (sourceLang === "en" && targetLang === "hi") {
       console.log("English → Hindi:", recognizedText);
@@ -82,43 +82,43 @@ let translatedText = "";
       translatedText = response?.data?.output_text;
       console.log("Translated Text:", translatedText);
 
- 
-      
+
+
       // TODO: call translation API for English → Hindi
     } else if (sourceLang === "en" && targetLang === "te") {
       console.log("English → Telugu:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
-       translatedText = response?.data?.output_text;
+      translatedText = response?.data?.output_text;
       console.log("Translated Text:", translatedText);
 
     } else if (sourceLang === "hi" && targetLang === "en") {
       console.log("Hindi → English:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
-       translatedText = response?.data?.output_text;
+      translatedText = response?.data?.output_text;
       console.log("Translated Text:", translatedText);
     } else if (sourceLang === "hi" && targetLang === "te") {
       console.log("Hindi → Telugu:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
-       translatedText = response?.data?.output_text;
+      translatedText = response?.data?.output_text;
       console.log("Translated Text:", translatedText);
     } else if (sourceLang === "te" && targetLang === "en") {
       console.log("Telugu → English:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
-     translatedText = response?.data?.output_text;
+      translatedText = response?.data?.output_text;
       console.log("Translated Text:", translatedText);
     } else if (sourceLang === "te" && targetLang === "hi") {
       console.log("Telugu → Hindi:", recognizedText);
       const response = await callCanvasAPI(recognizedText, sourceLang, targetLang);
-       translatedText = response?.data?.output_text;
+      translatedText = response?.data?.output_text;
       console.log("Translated Text:", translatedText);
     } else if (sourceLang === "en" && targetLang === "en") {
       // generateTTS(recognizedText, "male", setLoading);
       console.log("English → English (no translation needed):", recognizedText);
-      
-      
+
+
     } else if (sourceLang === "hi" && targetLang === "hi") {
       console.log("Hindi → Hindi (no translation needed):", recognizedText);
-      
+
     } else if (sourceLang === "te" && targetLang === "te") {
       console.log("Telugu → Telugu (no translation needed):", recognizedText);
 
@@ -126,20 +126,20 @@ let translatedText = "";
       console.log("Unsupported combination:", sourceLang, targetLang);
     }
 
-     if (translatedText) {
-    // Call your TTS function, pass gender and setLoading if needed
-    generateTTS(translatedText, "male", targetLang, setLoading);
-  } else {
-    console.warn("No translated text returned from API");
-  }
+    if (translatedText) {
+      // Call your TTS function, pass gender and setLoading if needed
+      generateTTS(translatedText, "male", targetLang, setLoading);
+    } else {
+      console.warn("No translated text returned from API");
+    }
     // Optional: show in alert
-   
+
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.card}>
-        <Text style={styles.title}>🎤 Speech to Speech</Text>
+        <Text style={styles.title}>🎤 Instant Translation</Text>
 
         {/* 🌐 Selected languages display */}
         <View style={styles.languageBox}>
@@ -151,7 +151,7 @@ let translatedText = "";
         {/* 🈯 Pickers for source and target */}
         <View style={styles.pickerRow}>
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>From</Text>
+            <Text style={styles.label}>I speak in</Text>
             <Picker
               selectedValue={sourceLang}
               onValueChange={(value) => setSourceLang(value)}
@@ -164,7 +164,7 @@ let translatedText = "";
           </View>
 
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>To</Text>
+            <Text style={styles.label}>Translate to</Text>
             <Picker
               selectedValue={targetLang}
               onValueChange={(value) => setTargetLang(value)}
@@ -178,7 +178,7 @@ let translatedText = "";
         </View>
 
         {/* 🎙️ Voice recording component */}
-       <VoiceRecorder sourceLang={sourceLang} onResult={handleVoiceResult} />
+        <VoiceRecorder sourceLang={sourceLang} onResult={handleVoiceResult} />
       </View>
     </ScrollView>
   );

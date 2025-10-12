@@ -103,14 +103,14 @@ function Navigation(): React.JSX.Element {
         <Stack.Screen
           name="TextToSpeechScreen"
           component={TextToSpeech}
-          options={{ title: "Text to Speech" }}
+          options={{ title: "Listen like a Local" }}
         />
         <Stack.Screen
           name="CallScreen"
           component={CallTranslation}
           options={{ title: "Voice/Video Call" }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="AudioToSpeech"
           component={AudioToSpeech}
           options={{ title: "Audio To Speech" }}

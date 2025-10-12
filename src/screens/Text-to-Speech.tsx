@@ -8,10 +8,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Sound from "react-native-sound";
+import LinearGradient from "react-native-linear-gradient"; // ✅ Added
 import { callCanvasTTSAPI } from "../components/TTS";
 
 Sound.setCategory("Playback");
-
 
 const TextToSpeech = () => {
   const [inputText, setInputText] = useState("");
@@ -67,101 +67,107 @@ const TextToSpeech = () => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#F8F9FA",
-        paddingHorizontal: 20,
-      }}
+    <LinearGradient
+      colors={["#A7C7E7", "#E0F7FA", "#D6F0FF"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }}
     >
-      <Text
-        style={{
-          fontSize: 22,
-          fontWeight: "700",
-          color: "#333",
-          marginBottom: 20,
-        }}
-      >
-        🗣️ Text to Speech
-      </Text>
-
-      <TextInput
-        placeholder="Enter text here..."
-        placeholderTextColor="#888"
-        value={inputText}
-        onChangeText={setInputText}
-        style={{
-          width: "100%",
-          borderWidth: 1,
-          borderColor: "#ccc",
-          borderRadius: 8,
-          padding: 12,
-          backgroundColor: "#fff",
-          fontSize: 16,
-          marginBottom: 20,
-        }}
-        multiline
-      />
-
-      {/* Gender toggle */}
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          width: "100%",
-          marginBottom: 20,
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingHorizontal: 20,
         }}
       >
-        <TouchableOpacity
-          onPress={() => setGender("male")}
+        <Text
           style={{
-            padding: 10,
-            borderRadius: 8,
-            backgroundColor: gender === "male" ? "#007BFF" : "#ccc",
-            width: "45%",
-            alignItems: "center",
+            fontSize: 22,
+            fontWeight: "700",
+            color: "#333",
+            marginBottom: 20,
           }}
         >
-          <Text style={{ color: "#fff", fontWeight: "600" }}>Male</Text>
-        </TouchableOpacity>
+          🗣️ Text to Speech
+        </Text>
 
-        <TouchableOpacity
-          onPress={() => setGender("female")}
+        <TextInput
+          placeholder="Type what you want to hear"
+          placeholderTextColor="#888"
+          value={inputText}
+          onChangeText={setInputText}
           style={{
-            padding: 10,
+            width: "100%",
+            borderWidth: 1,
+            borderColor: "#ccc",
             borderRadius: 8,
-            backgroundColor: gender === "female" ? "#007BFF" : "#ccc",
-            width: "45%",
+            padding: 12,
+            backgroundColor: "#fff",
+            fontSize: 16,
+            marginBottom: 20,
+          }}
+          multiline
+        />
+
+        {/* Gender toggle */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            width: "100%",
+            marginBottom: 20,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => setGender("male")}
+            style={{
+              padding: 10,
+              borderRadius: 8,
+              backgroundColor: gender === "male" ? "#007BFF" : "#ccc",
+              width: "45%",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "600" }}>Male</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setGender("female")}
+            style={{
+              padding: 10,
+              borderRadius: 8,
+              backgroundColor: gender === "female" ? "#007BFF" : "#ccc",
+              width: "45%",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "600" }}>Female</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Submit */}
+        <TouchableOpacity
+          onPress={handleSubmit}
+          disabled={loading}
+          style={{
+            backgroundColor: "#28A745",
+            padding: 14,
+            borderRadius: 8,
+            width: "100%",
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff", fontWeight: "600" }}>Female</Text>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
+              🔊 Play
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
-
-      {/* Submit */}
-      <TouchableOpacity
-        onPress={handleSubmit}
-        disabled={loading}
-        style={{
-          backgroundColor: "#28A745",
-          padding: 14,
-          borderRadius: 8,
-          width: "100%",
-          alignItems: "center",
-        }}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
-            🔊 Generate & Play
-          </Text>
-        )}
-      </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
 

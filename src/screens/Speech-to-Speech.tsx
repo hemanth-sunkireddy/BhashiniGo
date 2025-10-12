@@ -74,7 +74,7 @@ const SpeechToSpeech = () => {
 
         <View style={styles.pickerRow}>
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>From</Text>
+            <Text style={styles.label}>I speak in</Text>
             <Picker
               selectedValue={sourceLang}
               onValueChange={(value) => setSourceLang(value)}
@@ -87,7 +87,7 @@ const SpeechToSpeech = () => {
           </View>
 
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>To</Text>
+            <Text style={styles.label}>Local Language</Text>
             <Picker
               selectedValue={targetLang}
               onValueChange={(value) => setTargetLang(value)}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   picker: {
-    height: 50,
+    height: 55,
     color: "#000",
   },
 });

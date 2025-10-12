@@ -43,8 +43,8 @@ const features = [
   {
     key: "AudioToSpeech",
     icon: SpeakerIcon,
-    mainText: "Audio To Speech",
-    subText: "Audio To Speech",
+    mainText: "Instant Voice Translate",
+    subText: "Speech To Speech",
   }
 ];
 
