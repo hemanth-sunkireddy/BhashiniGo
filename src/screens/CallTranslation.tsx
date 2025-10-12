@@ -1,194 +1,39 @@
-// import React, { useEffect, useState } from "react";
-// import { View, Text, Button, StyleSheet, PermissionsAndroid, Platform, Alert } from "react-native";
-// import { createAgoraRtcEngine, ChannelProfileType, ClientRoleType } from "react-native-agora";
-// import RNFS from "react-native-fs";
-
-// const APP_ID = "80d31fcd548a464facd4643903ad068b";
-// const CHANNEL_NAME = "voice_test";
-// const TOKEN = ""; // Leave empty if token authentication is disabled on your Agora project
-// const UID = 0; // Auto-assigned UID
-
-
-// import Sound from "react-native-sound";
-
-// export const playAudioFromUrl = async (filePath) => {
-//   try {
-//     await new Promise((resolve) => setTimeout(resolve, 5000));
-//     const exists = await RNFS.exists(filePath);
-//     if (!exists) {
-//       console.error("❌ File not found:", filePath);
-//       Alert.alert("Error", "Recording file not found.");
-//       return;
-//     }
-
-//     // ✅ Prefix with "file://" for Android local file playback
-//     const localFile = `file://${filePath}`;
-
-//     const sound = new Sound(localFile, Sound.MAIN_BUNDLE, (error) => {
-//       if (error) {
-//         console.error("🔴 Failed to load sound:", error);
-//         Alert.alert("Playback Error", "Failed to load recorded audio.");
-//         return;
-//       }
-//       console.log("✅ Loaded sound successfully, playing now...");
-//       sound.play((success) => {
-//         if (success) console.log("✅ Audio played successfully");
-//         else console.error("🔴 Playback failed");
-//         sound.release();
-//       });
-//     });
-//   } catch (err) {
-//     console.error("🔥 Audio playback error:", err);
-//   }
-// };
-
-// const VoiceCall = () => {
-//   const [engine, setEngine] = useState(null);
-//   const [joined, setJoined] = useState(false);
-//   const [remoteUid, setRemoteUid] = useState(null);
-
-//   // 🔸 Request microphone permission (Android)
-//   const requestPermission = async () => {
-//     if (Platform.OS === "android") {
-//       await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
-//     }
-//   };
-
-//   useEffect(() => {
-//     requestPermission();
-
-//     const agoraEngine = createAgoraRtcEngine();
-//     setEngine(agoraEngine);
-
-//     agoraEngine.initialize({ appId: APP_ID });
-
-//     // Set channel profile to "Communication"
-//     agoraEngine.setChannelProfile(ChannelProfileType.ChannelProfileCommunication);
-
-//     // Set user role (broadcaster)
-//     // agoraEngine.setClientRole(ClientRoleType.ClientRoleBroadcaster);
-//     agoraEngine.setClientRole(ClientRoleType.ClientRoleAudience);
-
-
-//     // agoraEngine.enableAudioVolumeIndication(1000, 3, true);
-
-//     // Event listeners
-//     agoraEngine.registerEventHandler({
-//       onJoinChannelSuccess: (connection, elapsed) => {
-//         console.log("✅ Joined channel successfully:", connection);
-//         setJoined(true);
-//       },
-//       onUserJoined: (connection, uid, elapsed) => {
-//         console.log("🎧 Remote user joined:", uid);
-//         setRemoteUid(uid);
-//       },
-//       onUserOffline: (connection, uid, reason) => {
-//         console.log("❌ Remote user left:", uid);
-//         setRemoteUid(null);
-//       },
-//       onError: (err, msg) => {
-//         console.log("🚨 Agora error:", err, msg);
-//       },
-
-//       onAudioVolumeIndication: (connection, speakers, totalVolume) => {
-//         if (speakers.length > 0) {
-//           console.log(
-//             "🎤 Speaking UID:",
-//             speakers[0].uid,
-//             "Volume:",
-//             speakers[0].volume
-//           );
-//         }
-//       },
-//     });
-
-//     return () => {
-//       agoraEngine.leaveChannel();
-//       agoraEngine.release();
-//     };
-//   }, []);
-
-//   // const joinChannel = () => {
-//   //   if (!engine) return;
-//   //   engine.enableAudio();
-//   //   engine.muteAllRemoteAudioStreams(false);
-//   //   engine.joinChannel(TOKEN, CHANNEL_NAME, UID, { clientRoleType: ClientRoleType.ClientRoleBroadcaster });
-//   // };
-
-//   const joinChannel = async () => {
-//     if (!engine) return;
-
-//     // engine.enableAudio();
-//     engine.muteLocalAudioStream(true);
-//     engine.muteAllRemoteAudioStreams(false);
-//     engine.setEnableSpeakerphone(true);
-//   engine.setEnableSpeakerphone(true); 
-
-//     // 🔸 Start recording audio to a .wav file
-
-//     engine.joinChannel(TOKEN, CHANNEL_NAME, UID, {
-//       clientRoleType: ClientRoleType.ClientRoleAudience, 
-//     });
-
-    
-
-//     console.log("🎧 Recording started at:", filePath);
-//   };
-
-//   const leaveChannel = () => {
-//     if (!engine) return;
-//     engine.leaveChannel();
-//     setJoined(false);
-//     setRemoteUid(null);
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.title}>Agora Voice Call</Text>
-//       <Text style={styles.info}>
-//         {joined
-//           ? remoteUid
-//             ? `Connected to UID: ${remoteUid}`
-//             : "Waiting for remote user..."
-//           : "Not joined"}
-//       </Text>
-
-//       {!joined ? (
-//         <Button title="Join Channel" onPress={joinChannel} />
-//       ) : (
-//         <Button title="Leave Channel" color="red" onPress={leaveChannel} />
-//       )}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: { flex: 1, justifyContent: "center", alignItems: "center" },
-//   title: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-//   info: { marginBottom: 20 },
-// });
-
-// export default VoiceCall;
-
-
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, PermissionsAndroid, Platform } from "react-native";
-import { createAgoraRtcEngine, ChannelProfileType, ClientRoleType } from "react-native-agora";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+} from "react-native";
+import {
+  createAgoraRtcEngine,
+  ChannelProfileType,
+  ClientRoleType,
+} from "react-native-agora";
+import RNFS from "react-native-fs";
+import Sound from "react-native-sound";
+import { callCanvasAudioAPI } from "../components/ASR"; // your ASR function
+import {  callCanvasTTSAPI } from "../components/TTS"; // your existing APIs
+import {callCanvasAPI} from "../components/MT"
 
 const APP_ID = "80d31fcd548a464facd4643903ad068b";
 const CHANNEL_NAME = "voice_test";
-const TOKEN = ""; // Leave empty if token authentication is disabled on your Agora project
-const UID = 0; // Auto-assigned UID
+const TOKEN = ""; // leave empty if token authentication is disabled
+const UID = 0; // auto-assigned UID
 
 const VoiceCall = () => {
-  const [engine, setEngine] = useState(null);
+  const [engine, setEngine] = useState<any>(null);
   const [joined, setJoined] = useState(false);
-  const [remoteUid, setRemoteUid] = useState(null);
+  const [remoteUid, setRemoteUid] = useState<number | null>(null);
 
-  // 🔸 Request microphone permission (Android)
+  // 🔸 Ask for mic permission
   const requestPermission = async () => {
     if (Platform.OS === "android") {
-      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+      );
     }
   };
 
@@ -197,19 +42,12 @@ const VoiceCall = () => {
 
     const agoraEngine = createAgoraRtcEngine();
     setEngine(agoraEngine);
-
     agoraEngine.initialize({ appId: APP_ID });
-
-    // Set channel profile to "Communication"
     agoraEngine.setChannelProfile(ChannelProfileType.ChannelProfileCommunication);
-
-    // Set user role (broadcaster)
     agoraEngine.setClientRole(ClientRoleType.ClientRoleBroadcaster);
+    agoraEngine.enableAudioVolumeIndication(1000, 3, true);
 
-
-     agoraEngine.enableAudioVolumeIndication(1000, 3, true);
-
-    // Event listeners
+    // ✅ Event handlers
     agoraEngine.registerEventHandler({
       onJoinChannelSuccess: (connection, elapsed) => {
         console.log("✅ Joined channel successfully:", connection);
@@ -226,17 +64,6 @@ const VoiceCall = () => {
       onError: (err, msg) => {
         console.log("🚨 Agora error:", err, msg);
       },
-
-      onAudioVolumeIndication: (connection, speakers, totalVolume) => {
-      if (speakers.length > 0) {
-        console.log(
-          "🎤 Speaking UID:",
-          speakers[0].uid,
-          "Volume:",
-          speakers[0].volume
-        );
-      }
-    },
     });
 
     return () => {
@@ -245,11 +72,17 @@ const VoiceCall = () => {
     };
   }, []);
 
+  // Join/Leave
   const joinChannel = () => {
     if (!engine) return;
     engine.enableAudio();
-  engine.setDefaultAudioRouteToSpeakerphone(true);
-    engine.joinChannel(TOKEN, CHANNEL_NAME, UID, { clientRoleType: ClientRoleType.ClientRoleBroadcaster });
+    engine.setDefaultAudioRouteToSpeakerphone(true);
+    engine.joinChannel(TOKEN, CHANNEL_NAME, UID, {
+      clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    });
+
+    // 🔁 Start periodic translation every 3 seconds
+    startPeriodicTranslation();
   };
 
   const leaveChannel = () => {
@@ -257,11 +90,90 @@ const VoiceCall = () => {
     engine.leaveChannel();
     setJoined(false);
     setRemoteUid(null);
+    stopPeriodicTranslation();
+  };
+
+  // -----------------------
+  // 🎧 Audio Translation Loop
+  // -----------------------
+
+  let translationTimer: ReturnType<typeof setInterval> | null = null;
+
+  const startPeriodicTranslation = () => {
+    if (translationTimer) return;
+    translationTimer = setInterval(async () => {
+      try {
+        console.log("🎤 Capturing 3s audio chunk...");
+
+        // 🟢 1️⃣ Record short audio chunk (simulate or integrate with Agora audio frame)
+        const filePath = `${RNFS.DocumentDirectoryPath}/chunk_${Date.now()}.wav`;
+        // For now, assume you already have a short WAV captured via another recorder or engine
+        // In real use, you’d write the PCM buffer here
+
+        // 🟢 2️⃣ Send to ASR (English speech → text)
+        const asrResponse = await callCanvasAudioAPI(filePath, "en");
+        const recognizedText = asrResponse?.data?.recognized_text?.trim();
+
+        if (!recognizedText) {
+          console.log("⚠️ No speech recognized.");
+          return;
+        }
+
+        console.log("🗣️ Recognized:", recognizedText);
+
+        // 🟢 3️⃣ Translate English → Hindi
+        const translationResponse = await callCanvasAPI(
+          recognizedText,
+          "en",
+          "hi"
+        );
+        const translatedText =
+          translationResponse?.data?.output_text || "नमस्ते, आप कैसे हैं?";
+        console.log("🌍 Translated:", translatedText);
+
+        // 🟢 4️⃣ Convert translated Hindi → Speech
+        const ttsResponse = await callCanvasTTSAPI(
+          translatedText,
+          "male",
+          "hi"
+        );
+        const audioUrl = ttsResponse?.data?.s3_url;
+
+        // 🟢 5️⃣ Play translated audio
+        if (audioUrl) await playAudioFromUrl(audioUrl);
+      } catch (err) {
+        console.error("🚨 Translation chain error:", err);
+      }
+    }, 3000);
+  };
+
+  const stopPeriodicTranslation = () => {
+    if (translationTimer) {
+      clearInterval(translationTimer);
+      translationTimer = null;
+    }
+  };
+
+  // 🔊 Play translated speech
+  const playAudioFromUrl = async (url: string) => {
+    return new Promise<void>((resolve, reject) => {
+      const sound = new Sound(url, null, (error) => {
+        if (error) {
+          console.error("Error loading TTS audio:", error);
+          reject(error);
+          return;
+        }
+        sound.play(() => {
+          sound.release();
+          resolve();
+        });
+      });
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Agora Voice Call</Text>
+      <Text style={styles.title}>Agora Voice Call + Live Translation</Text>
       <Text style={styles.info}>
         {joined
           ? remoteUid
