@@ -45,6 +45,12 @@ const features = [
     icon: SpeakerIcon,
     mainText: "Instant Voice Translate",
     subText: "Speech To Speech",
+  },
+  {
+    key: "CallTranslation",
+    icon: SpeakerIcon,
+    mainText: "Call Translation",
+    subText: "Call Translation",
   }
 ];
 
@@ -89,6 +95,9 @@ const Home = ({ navigation }: any) => {
     }
     else if (featureKey === "AudioToSpeech") {
       navigation.navigate("AudioToSpeech");
+    }
+    else if (featureKey === "CallTranslation") {
+      navigation.navigate("CallScreen");
     }
   };
 

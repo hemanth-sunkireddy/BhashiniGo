@@ -1,157 +1,288 @@
+// import React, { useEffect, useState } from "react";
+// import { View, Text, Button, StyleSheet, PermissionsAndroid, Platform, Alert } from "react-native";
+// import { createAgoraRtcEngine, ChannelProfileType, ClientRoleType } from "react-native-agora";
+// import RNFS from "react-native-fs";
+
+// const APP_ID = "80d31fcd548a464facd4643903ad068b";
+// const CHANNEL_NAME = "voice_test";
+// const TOKEN = ""; // Leave empty if token authentication is disabled on your Agora project
+// const UID = 0; // Auto-assigned UID
+
+
+// import Sound from "react-native-sound";
+
+// export const playAudioFromUrl = async (filePath) => {
+//   try {
+//     await new Promise((resolve) => setTimeout(resolve, 5000));
+//     const exists = await RNFS.exists(filePath);
+//     if (!exists) {
+//       console.error("❌ File not found:", filePath);
+//       Alert.alert("Error", "Recording file not found.");
+//       return;
+//     }
+
+//     // ✅ Prefix with "file://" for Android local file playback
+//     const localFile = `file://${filePath}`;
+
+//     const sound = new Sound(localFile, Sound.MAIN_BUNDLE, (error) => {
+//       if (error) {
+//         console.error("🔴 Failed to load sound:", error);
+//         Alert.alert("Playback Error", "Failed to load recorded audio.");
+//         return;
+//       }
+//       console.log("✅ Loaded sound successfully, playing now...");
+//       sound.play((success) => {
+//         if (success) console.log("✅ Audio played successfully");
+//         else console.error("🔴 Playback failed");
+//         sound.release();
+//       });
+//     });
+//   } catch (err) {
+//     console.error("🔥 Audio playback error:", err);
+//   }
+// };
+
+// const VoiceCall = () => {
+//   const [engine, setEngine] = useState(null);
+//   const [joined, setJoined] = useState(false);
+//   const [remoteUid, setRemoteUid] = useState(null);
+
+//   // 🔸 Request microphone permission (Android)
+//   const requestPermission = async () => {
+//     if (Platform.OS === "android") {
+//       await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+//     }
+//   };
+
+//   useEffect(() => {
+//     requestPermission();
+
+//     const agoraEngine = createAgoraRtcEngine();
+//     setEngine(agoraEngine);
+
+//     agoraEngine.initialize({ appId: APP_ID });
+
+//     // Set channel profile to "Communication"
+//     agoraEngine.setChannelProfile(ChannelProfileType.ChannelProfileCommunication);
+
+//     // Set user role (broadcaster)
+//     // agoraEngine.setClientRole(ClientRoleType.ClientRoleBroadcaster);
+//     agoraEngine.setClientRole(ClientRoleType.ClientRoleAudience);
+
+
+//     // agoraEngine.enableAudioVolumeIndication(1000, 3, true);
+
+//     // Event listeners
+//     agoraEngine.registerEventHandler({
+//       onJoinChannelSuccess: (connection, elapsed) => {
+//         console.log("✅ Joined channel successfully:", connection);
+//         setJoined(true);
+//       },
+//       onUserJoined: (connection, uid, elapsed) => {
+//         console.log("🎧 Remote user joined:", uid);
+//         setRemoteUid(uid);
+//       },
+//       onUserOffline: (connection, uid, reason) => {
+//         console.log("❌ Remote user left:", uid);
+//         setRemoteUid(null);
+//       },
+//       onError: (err, msg) => {
+//         console.log("🚨 Agora error:", err, msg);
+//       },
+
+//       onAudioVolumeIndication: (connection, speakers, totalVolume) => {
+//         if (speakers.length > 0) {
+//           console.log(
+//             "🎤 Speaking UID:",
+//             speakers[0].uid,
+//             "Volume:",
+//             speakers[0].volume
+//           );
+//         }
+//       },
+//     });
+
+//     return () => {
+//       agoraEngine.leaveChannel();
+//       agoraEngine.release();
+//     };
+//   }, []);
+
+//   // const joinChannel = () => {
+//   //   if (!engine) return;
+//   //   engine.enableAudio();
+//   //   engine.muteAllRemoteAudioStreams(false);
+//   //   engine.joinChannel(TOKEN, CHANNEL_NAME, UID, { clientRoleType: ClientRoleType.ClientRoleBroadcaster });
+//   // };
+
+//   const joinChannel = async () => {
+//     if (!engine) return;
+
+//     // engine.enableAudio();
+//     engine.muteLocalAudioStream(true);
+//     engine.muteAllRemoteAudioStreams(false);
+//     engine.setEnableSpeakerphone(true);
+//   engine.setEnableSpeakerphone(true); 
+
+//     // 🔸 Start recording audio to a .wav file
+
+//     engine.joinChannel(TOKEN, CHANNEL_NAME, UID, {
+//       clientRoleType: ClientRoleType.ClientRoleAudience, 
+//     });
+
+    
+
+//     console.log("🎧 Recording started at:", filePath);
+//   };
+
+//   const leaveChannel = () => {
+//     if (!engine) return;
+//     engine.leaveChannel();
+//     setJoined(false);
+//     setRemoteUid(null);
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <Text style={styles.title}>Agora Voice Call</Text>
+//       <Text style={styles.info}>
+//         {joined
+//           ? remoteUid
+//             ? `Connected to UID: ${remoteUid}`
+//             : "Waiting for remote user..."
+//           : "Not joined"}
+//       </Text>
+
+//       {!joined ? (
+//         <Button title="Join Channel" onPress={joinChannel} />
+//       ) : (
+//         <Button title="Leave Channel" color="red" onPress={leaveChannel} />
+//       )}
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: { flex: 1, justifyContent: "center", alignItems: "center" },
+//   title: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+//   info: { marginBottom: 20 },
+// });
+
+// export default VoiceCall;
+
+
 import React, { useEffect, useState } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  Platform, 
-  PermissionsAndroid, 
-  Alert 
-} from "react-native";
-import RtcEngine, { ChannelProfile, ClientRole } from "react-native-agora";
+import { View, Text, Button, StyleSheet, PermissionsAndroid, Platform } from "react-native";
+import { createAgoraRtcEngine, ChannelProfileType, ClientRoleType } from "react-native-agora";
 
-const AGORA_APP_ID = "adac1c3d81f54c258d3089fda64c3641";
-const TOKEN = "007eJxTYKg6li30V2VhqG3+o/SgL86zhEW+CCzbYNAgqpi1SPaccrsCg4mxhYVJsgUQWqaYJCabWphbGhgnp6WZGZqbp6RYpGn9fJXREMjIUPV8BgsjAwSC+FwMuanpiSUZ+XlGpgwMALA7IPY=";
-const CHANNEL_NAME = "megathon25";
+const APP_ID = "80d31fcd548a464facd4643903ad068b";
+const CHANNEL_NAME = "voice_test";
+const TOKEN = ""; // Leave empty if token authentication is disabled on your Agora project
+const UID = 0; // Auto-assigned UID
 
-const CallScreen = ({ navigation }: any) => {
-  const [engine, setEngine] = useState<RtcEngine | null>(null);
-  const [remoteUid, setRemoteUid] = useState<number | null>(null);
+const VoiceCall = () => {
+  const [engine, setEngine] = useState(null);
+  const [joined, setJoined] = useState(false);
+  const [remoteUid, setRemoteUid] = useState(null);
 
-  // Request microphone permission (Android)
-  const requestAudioPermission = async () => {
+  // 🔸 Request microphone permission (Android)
+  const requestPermission = async () => {
     if (Platform.OS === "android") {
-      console.log("[PERMISSION] Requesting microphone permission...");
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          {
-            title: "Microphone Permission",
-            message: "App needs access to your microphone for voice call",
-            buttonNeutral: "Ask Me Later",
-            buttonNegative: "Cancel",
-            buttonPositive: "OK",
-          }
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("[PERMISSION] Microphone permission denied");
-          Alert.alert("Permission Denied", "Cannot start call without microphone permission");
-          return false;
-        } else {
-          console.log("[PERMISSION] Microphone permission granted ✅");
-        }
-      } catch (err) {
-        console.warn("[PERMISSION] Error requesting permission:", err);
-        return false;
-      }
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
     }
-    return true;
   };
 
   useEffect(() => {
-    const init = async () => {
-      console.log("[INIT] Starting Agora initialization...");
-      const hasPermission = await requestAudioPermission();
-      if (!hasPermission) {
-        console.log("[INIT] Initialization aborted — no permission.");
-        return;
+    requestPermission();
+
+    const agoraEngine = createAgoraRtcEngine();
+    setEngine(agoraEngine);
+
+    agoraEngine.initialize({ appId: APP_ID });
+
+    // Set channel profile to "Communication"
+    agoraEngine.setChannelProfile(ChannelProfileType.ChannelProfileCommunication);
+
+    // Set user role (broadcaster)
+    agoraEngine.setClientRole(ClientRoleType.ClientRoleBroadcaster);
+
+
+     agoraEngine.enableAudioVolumeIndication(1000, 3, true);
+
+    // Event listeners
+    agoraEngine.registerEventHandler({
+      onJoinChannelSuccess: (connection, elapsed) => {
+        console.log("✅ Joined channel successfully:", connection);
+        setJoined(true);
+      },
+      onUserJoined: (connection, uid, elapsed) => {
+        console.log("🎧 Remote user joined:", uid);
+        setRemoteUid(uid);
+      },
+      onUserOffline: (connection, uid, reason) => {
+        console.log("❌ Remote user left:", uid);
+        setRemoteUid(null);
+      },
+      onError: (err, msg) => {
+        console.log("🚨 Agora error:", err, msg);
+      },
+
+      onAudioVolumeIndication: (connection, speakers, totalVolume) => {
+      if (speakers.length > 0) {
+        console.log(
+          "🎤 Speaking UID:",
+          speakers[0].uid,
+          "Volume:",
+          speakers[0].volume
+        );
       }
-
-      try {
-        console.log("[INIT] Creating Agora engine...");
-        const rtcEngine = await RtcEngine.create(AGORA_APP_ID);
-        setEngine(rtcEngine);
-        console.log("[INIT] Agora engine created successfully ✅");
-
-        console.log("[INIT] Setting channel profile to Communication...");
-        await rtcEngine.setChannelProfile(ChannelProfile.Communication);
-
-        console.log("[INIT] Setting client role to Broadcaster...");
-        await rtcEngine.setClientRole(ClientRole.Broadcaster);
-
-        console.log("[INIT] Enabling audio...");
-        await rtcEngine.enableAudio();
-
-        console.log("[INIT] Starting local audio capture...");
-        await rtcEngine.startPreview();
-
-        // --- Agora event listeners ---
-        console.log("[LISTENER] Adding Agora event listeners...");
-
-        rtcEngine.addListener("JoinChannelSuccess", (channel, uid, elapsed) => {
-          console.log(`[EVENT] Joined channel: ${channel} | UID: ${uid} | Elapsed: ${elapsed}ms ✅`);
-        });
-
-        rtcEngine.addListener("UserJoined", (uid) => {
-          console.log(`[EVENT] Remote user joined: UID = ${uid} 🎧`);
-          setRemoteUid(uid);
-        });
-
-        rtcEngine.addListener("UserOffline", (uid, reason) => {
-          console.log(`[EVENT] Remote user left: UID = ${uid}, Reason = ${reason} ❌`);
-          setRemoteUid(null);
-        });
-
-        rtcEngine.addListener("LeaveChannel", (stats) => {
-          console.log(`[EVENT] Local user left channel. Duration: ${stats.duration}s, Total Users: ${stats.userCount}`);
-        });
-
-        rtcEngine.addListener("Error", (err) => {
-          console.log(`[ERROR] Agora SDK Error: ${err}`);
-        });
-
-        rtcEngine.addListener("Warning", (warn) => {
-          console.log(`[WARNING] Agora SDK Warning: ${warn}`);
-        });
-
-        // --- Join channel ---
-        console.log(`[JOIN] Joining channel: ${CHANNEL_NAME} with token...`);
-        await rtcEngine.joinChannel(TOKEN, CHANNEL_NAME, null, 0);
-        console.log("[JOIN] Channel join request sent ✅");
-
-      } catch (err) {
-        console.error("[INIT ERROR] Error initializing Agora:", err);
-      }
-    };
-
-    init();
+    },
+    });
 
     return () => {
-      console.log("[CLEANUP] Leaving channel and destroying engine...");
-      engine?.leaveChannel().then(() => console.log("[CLEANUP] Left channel ✅"));
-      engine?.destroy().then(() => console.log("[CLEANUP] Engine destroyed ✅"));
+      agoraEngine.leaveChannel();
+      agoraEngine.release();
     };
   }, []);
 
-  const endCall = async () => {
-    console.log("[ACTION] End call pressed.");
-    await engine?.leaveChannel();
-    await engine?.destroy();
-    console.log("[ACTION] Call ended. Navigating back.");
-    navigation.goBack();
+  const joinChannel = () => {
+    if (!engine) return;
+    engine.enableAudio();
+  engine.setDefaultAudioRouteToSpeakerphone(true);
+    engine.joinChannel(TOKEN, CHANNEL_NAME, UID, { clientRoleType: ClientRoleType.ClientRoleBroadcaster });
+  };
+
+  const leaveChannel = () => {
+    if (!engine) return;
+    engine.leaveChannel();
+    setJoined(false);
+    setRemoteUid(null);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Voice Call</Text>
-      <Text>Connected to channel: {CHANNEL_NAME}</Text>
-      {remoteUid ? (
-        <Text>Remote User ID: {remoteUid}</Text>
+      <Text style={styles.title}>Agora Voice Call</Text>
+      <Text style={styles.info}>
+        {joined
+          ? remoteUid
+            ? `Connected to UID: ${remoteUid}`
+            : "Waiting for remote user..."
+          : "Not joined"}
+      </Text>
+
+      {!joined ? (
+        <Button title="Join Channel" onPress={joinChannel} />
       ) : (
-        <Text>Waiting for remote user...</Text>
+        <Button title="Leave Channel" color="red" onPress={leaveChannel} />
       )}
-      <TouchableOpacity style={styles.endButton} onPress={endCall}>
-        <Text style={styles.endButtonText}>End Call</Text>
-      </TouchableOpacity>
     </View>
   );
 };
 
-export default CallScreen;
-
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
-  title: { fontSize: 22, marginBottom: 20 },
-  endButton: { backgroundColor: "red", padding: 15, borderRadius: 50, marginTop: 30 },
-  endButtonText: { color: "#fff", fontWeight: "bold" },
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  title: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  info: { marginBottom: 20 },
 });
+
+export default VoiceCall;
