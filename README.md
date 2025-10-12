@@ -1,97 +1,76 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# BhasiniGO – Mobile Application Frontend
 
-# Getting Started
+This project is developed using **React Native CLI** with **TypeScript** for Android
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## ⚙️ Prerequisites
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+Before you begin, make sure you have the following installed:
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **Node.js (v18 or newer)** → [Download Node.js](https://nodejs.org/en/download/package-manager/)
+- **npm (v10.7 or newer)** → [Download npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- **Java Development Kit (JDK) - v17** → [Download JDK](https://openjdk.org/)
+- **Watchman** (optional but recommended) → [Install Watchman](https://facebook.github.io/watchman/docs/install#buildinstall)
 
-```sh
-# Using npm
-npm start
+For detailed setup instructions, refer to the [React Native documentation](https://reactnative.dev/docs/set-up-your-environment).
 
-# OR using Yarn
-yarn start
-```
+---
 
-## Step 2: Build and run your app
+## 🤖 Android Setup
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 1. Install Android Studio
 
-### Android
+- [Download Android Studio](https://developer.android.com/studio/index.html)
 
-```sh
-# Using npm
-npm run android
+### 2. Install Android SDK (API Level 34 - UpsideDownCake)
 
-# OR using Yarn
-yarn android
-```
+- Open **Android Studio**
+- Go to **SDK Manager**
+- Install **Android SDK version 14 (API level 34 - UpsideDownCake)**
 
-### iOS
+Refer to the [React Native Android setup guide](https://reactnative.dev/docs/set-up-your-environment) for more information.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+---
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### 3. Preparing Your Android Device
 
-```sh
-bundle install
-```
+You can run this app either on a **physical Android device** or an **Android emulator**.
 
-Then, and every time you update your native dependencies, run:
+#### **Option 1: Physical Device**
+1. Connect your Android phone via USB.
+2. Enable **Developer Options**:
+   - Open **Settings → About Phone**
+   - Tap **Build Number** seven times.
+3. Enable **USB Debugging**:
+   - Go to **Settings → Developer Options**
+   - Turn on **USB Debugging**.
 
-```sh
-bundle exec pod install
-```
+Refer to [React Native: Running on Device](https://reactnative.dev/docs/running-on-device) for detailed steps.
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+#### **Option 2: Emulator**
+1. Open **Android Studio**
+2. Go to **More Actions → Virtual Device Manager**
+3. Click **Create Virtual Device**
+4. Choose a device definition and click **Next**
+5. Select a **system image (API Level 34 recommended)**
+6. Configure AVD and click **Finish**
 
-```sh
-# Using npm
-npm run ios
+You can now launch the emulator and run your app.
 
-# OR using Yarn
-yarn ios
-```
+For more details: [Managing AVDs](https://developer.android.com/studio/run/managing-avds.html)
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 🚀 Running the Application
 
-## Step 3: Modify your app
+Follow these steps to start the app on your Android device or emulator:
 
-Now that you have successfully run the app, let's make changes!
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+2. Run `npx react-native run-android` in one terminal.
+3. Run `npx react-native start` in another terminall.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
