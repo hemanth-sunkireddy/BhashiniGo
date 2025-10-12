@@ -8,6 +8,7 @@ const features = [
   { key: "SpeechToSpeechScreen", label: "Speech To Speech" },
   { key: "ImageToTextScreen", label: "Image To Text" },
   { key: "TextToSpeechScreen", label: "Text to Speech" },
+  { key: "CallScreen", label: "Voice/Video Call" },
   // Add more features here as needed
 ];
 
@@ -46,6 +47,9 @@ const Home = ({ navigation }: any) => {
       navigation.navigate("ImageToTextScreen");
     } else if (featureKey === "TextToSpeechScreen") {
       navigation.navigate("TextToSpeechScreen");
+    }
+    else if (featureKey === "CallScreen") {
+      navigation.navigate("CallScreen");
     }
   };
 

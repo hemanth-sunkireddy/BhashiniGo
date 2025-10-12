@@ -19,6 +19,7 @@ import { getHeaderRight } from "./components/Header";
 import LanguageSelector from "./components/LanguageSelector";
 import i18next from "../lang/i18n";
 import { useTranslation } from "react-i18next";
+import CallTranslation from "./screens/CallTranslation";
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +93,11 @@ function Navigation(): React.JSX.Element {
           name="TextToSpeechScreen"
           component={TextToSpeech}
           options={{ title: "Text to Speech" }}
+        />
+        <Stack.Screen
+          name="CallScreen"
+          component={CallTranslation}
+          options={{ title: "Voice/Video Call" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
