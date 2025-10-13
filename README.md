@@ -1,4 +1,6 @@
-# BhasiniGO – Mobile Application Frontend
+# BhasiniGO – Mobile Application for Megathon Bhashini problem Statement
+
+* [PPT Link](https://www.canva.com/design/DAG1qQskHpA/Awwo-aLZ-g62h8R-rtHFHw/edit?utm_content=DAG1qQskHpA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 This project is developed using **React Native CLI** with **TypeScript** for Android
 
