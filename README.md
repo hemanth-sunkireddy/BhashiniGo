@@ -2,7 +2,7 @@
 
 * [PPT Link](https://www.canva.com/design/DAG1qQskHpA/Awwo-aLZ-g62h8R-rtHFHw/edit?utm_content=DAG1qQskHpA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-This project is developed using **React Native CLI** with **TypeScript** for Android
+This project is developed using **React Native CLI** with **TypeScript** for Android.
 
 * [APK and Demo Video Link](https://1drv.ms/f/c/dd419d073878fab6/EsPggOXr6LVPn5HTMaxqF_YBZZ4CGHYbEzI1VW6fdiVGdA?e=jKMihA)
 
